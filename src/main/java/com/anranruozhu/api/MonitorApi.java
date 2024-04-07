@@ -14,12 +14,13 @@ import javax.servlet.http.HttpServletRequest;
  * @create 2024/4/7 11:28
  **/
 @RestController
+@RequestMapping("/secure")
 public class MonitorApi {
-    @GetMapping("/secure/go")
+    @GetMapping("/go")
     public String go(){
         return "go";
     }
-    @RequestMapping("/secure/getUserInfo")
+    @RequestMapping("/getUserInfo")
     public String login() {
         return "yes";
     }

@@ -5,6 +5,8 @@ mybatis:
    map-underscore-to-camel-case: true
   mapper-locations: classpath:mapper/*.xml
 spring:
+  main:
+    allow-bean-definition-overriding: true
   application:
     name: provider
   datasource:
@@ -18,3 +20,7 @@ spring:
     jedis:
       pool:
         max-active: 8
+token:
+  refreshTime: 300000
+  secretKey: 096013
+  expiresTime: 3600000

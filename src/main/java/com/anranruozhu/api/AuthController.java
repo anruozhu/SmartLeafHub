@@ -1,6 +1,8 @@
 package com.anranruozhu.api;
 
 import com.anranruozhu.common.Result;
+import com.anranruozhu.entry.User;
+import com.anranruozhu.entry.UserInfo;
 import com.anranruozhu.service.LoginService;
 import com.anranruozhu.service.RegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,17 +28,11 @@ public class AuthController {
     public Result login(@RequestParam String phone, @RequestParam String password) {
         return loginService.login(phone,password);
     }
-
     // 注册接口
     @PostMapping("/register")
-    public String register(@RequestParam String username, @RequestParam String password, @RequestParam String phoneNumber) {
+    public Result register(@RequestParam User user, @RequestParam UserInfo userInfo) {
         // 处理注册逻辑
         // 返回注册结果
-        return "Registration successful for user: " + username;
-    }
-
-    @GetMapping("/secure/info")
-    public String info(){
-        return "通过token验证";
+        return registerService.register(user,userInfo);
     }
 }

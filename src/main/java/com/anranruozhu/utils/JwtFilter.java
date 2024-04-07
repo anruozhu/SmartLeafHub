@@ -14,7 +14,7 @@ import java.util.Map;
  * @author anranruozhu
  * @ClassName JwtFilter
  * @Description JWT过滤器，拦截 /secure的请求
- * @create 2024/4/3 15:51
+ * @create 2024/4/7 15:23
  **/
 @Slf4j
 @WebFilter(filterName = "JwtFilter", urlPatterns = "/secure/*")
@@ -36,12 +36,10 @@ public class JwtFilter implements Filter {
         }
         // Except OPTIONS, other request should be checked by JWT
         else {
-
             if (token == null) {
                 response.getWriter().write("没有token！");
                 return;
             }
-
             Map<String, Claim> userData = JwtUtil.verifyToken(token);
             if (userData == null) {
                 response.getWriter().write("token不合法！");

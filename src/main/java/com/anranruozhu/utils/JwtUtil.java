@@ -8,6 +8,8 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 
 import java.util.Date;
@@ -26,7 +28,6 @@ public class JwtUtil {
      * 密钥
      */
     private static final String SECRET = "my_secret";
-
     /**
      * 过期时间
      **/
@@ -73,3 +74,4 @@ public class JwtUtil {
         return jwt.getClaims();
     }
 }
+
