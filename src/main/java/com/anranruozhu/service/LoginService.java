@@ -5,6 +5,7 @@ import com.anranruozhu.common.Result;
 import com.anranruozhu.entry.User;
 import com.anranruozhu.mapper.UserMapper;
 import com.anranruozhu.utils.JwtUtil;
+import com.anranruozhu.utils.MD5;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,8 @@ public class LoginService {
     Result result=new Result();
 
     public Result login(String phone, String password) {
-        User user= userMapper.login(phone, password);
+        String encodedPwd = MD5.md5(password, phone);
+        User user= userMapper.login(phone, encodedPwd);
         if (user!=null) {
             log.info("登录成功！生成token！");
             String token = JwtUtil.createToken(user);
