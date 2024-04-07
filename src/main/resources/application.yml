@@ -8,7 +8,13 @@ spring:
   application:
     name: provider
   datasource:
-    url: jdbc:mysql://139.155.150.150:3307/learn?useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://139.155.150.150:3307/smartleafhub?useUnicode=true&characterEncoding=utf8
     username: root
     password: 1586866@Xyz
     driver-class-name: com.mysql.cj.jdbc.Driver
+  redis:
+    host: 139.155.150.150
+    port: 6379
+    jedis:
+      pool:
+        max-active: 8
