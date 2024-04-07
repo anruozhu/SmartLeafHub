@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Table;
+
 /**
  * @author anranruozhu
  * @ClassName User
@@ -17,16 +19,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel
+@Table(name = "users")
 public class User {
-    //实体类中，Integer类型的属性加@ApiModelProperty时，必须要给example参数赋值，且值必须为数字类型。
-    @ApiModelProperty(value = "用户id", example = "1")
-    private Integer id;
-    @ApiModelProperty(value = "用户名")
-    private String userName;
-    @ApiModelProperty(value = "用户密码")
+    private int id;
+    private String username;
     private String password;
-    @ApiModelProperty(value = "手机号")
-    private String phone;
+    private String phoneNumber;
     //getter/setter用@Data注解自动生成
 }
