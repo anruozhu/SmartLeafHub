@@ -4,6 +4,7 @@ import com.anranruozhu.common.Result;
 import com.anranruozhu.service.LoginService;
 import com.anranruozhu.service.RegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,5 +33,10 @@ public class AuthController {
         // 处理注册逻辑
         // 返回注册结果
         return "Registration successful for user: " + username;
+    }
+
+    @GetMapping("/secure/info")
+    public String info(){
+        return "通过token验证";
     }
 }
