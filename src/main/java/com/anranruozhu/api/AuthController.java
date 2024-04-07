@@ -5,11 +5,9 @@ import com.anranruozhu.entry.User;
 import com.anranruozhu.entry.UserInfo;
 import com.anranruozhu.service.LoginService;
 import com.anranruozhu.service.RegisterService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author anranruozhu
@@ -17,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @Description 身份验证接口
  * @create 2024/4/7 11:12
  **/
+@Slf4j
 @RestController
 public class AuthController {
     @Autowired
@@ -30,9 +29,10 @@ public class AuthController {
     }
     // 注册接口
     @PostMapping("/register")
-    public Result register(@RequestParam User user, @RequestParam UserInfo userInfo) {
+    public Result register(@RequestBody UserInfo userinfo) {
         // 处理注册逻辑
         // 返回注册结果
-        return registerService.register(user,userInfo);
+        log.info(userinfo.getPhoneNumber()+userinfo.getPassword());
+        return registerService.register(userinfo);
     }
 }

@@ -2,6 +2,9 @@ package com.anranruozhu.utils;
 
 import com.auth0.jwt.interfaces.Claim;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -19,6 +22,8 @@ import java.util.Map;
 @Slf4j
 @WebFilter(filterName = "JwtFilter", urlPatterns = "/secure/*")
 public class JwtFilter implements Filter {
+//    @Autowired
+//    private RedisTemplate redisTemplate;
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
     }
@@ -46,12 +51,8 @@ public class JwtFilter implements Filter {
                 return;
             }
             Integer id = userData.get("id").asInt();
-            String userName = userData.get("phone_number").asString();
-            String password = userData.get("password").asString();
             //拦截器 拿到用户信息，放到request中
             request.setAttribute("id", id);
-            request.setAttribute("phone_number", userName);
-            request.setAttribute("password", password);
             chain.doFilter(req, res);
         }
     }

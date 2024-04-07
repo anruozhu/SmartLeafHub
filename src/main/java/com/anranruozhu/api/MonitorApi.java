@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -17,8 +18,9 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/secure")
 public class MonitorApi {
     @GetMapping("/go")
-    public String go(){
-        return "go";
+    public String go(HttpServletRequest request){
+        int id= (int) request.getAttribute("id");
+        return "go"+id;
     }
     @RequestMapping("/getUserInfo")
     public String login() {
