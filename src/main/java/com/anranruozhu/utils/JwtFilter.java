@@ -30,7 +30,6 @@ public class JwtFilter implements Filter {
         response.setCharacterEncoding("UTF-8");
         //获取 header里的token
         final String token = request.getHeader("authorization");
-
         if ("OPTIONS".equals(request.getMethod())) {
             response.setStatus(HttpServletResponse.SC_OK);
             chain.doFilter(request, response);
@@ -49,16 +48,15 @@ public class JwtFilter implements Filter {
                 return;
             }
             Integer id = userData.get("id").asInt();
-            String userName = userData.get("userName").asString();
+            String userName = userData.get("phone_number").asString();
             String password = userData.get("password").asString();
             //拦截器 拿到用户信息，放到request中
             request.setAttribute("id", id);
-            request.setAttribute("userName", userName);
+            request.setAttribute("phone_number", userName);
             request.setAttribute("password", password);
             chain.doFilter(req, res);
         }
     }
-
     @Override
     public void destroy() {
     }

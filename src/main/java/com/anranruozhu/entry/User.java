@@ -19,11 +19,14 @@ import javax.persistence.Table;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ApiModel
 @Table(name = "users")
 public class User {
+    @ApiModelProperty(value = "用户id",example = "1")
     private int id;
-    private String username;
+    @ApiModelProperty(value = "用户密码")
     private String password;
+    @ApiModelProperty(value = "用户手机号")
     private String phoneNumber;
     //getter/setter用@Data注解自动生成
 }
