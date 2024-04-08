@@ -35,8 +35,7 @@ public class MsmApiController {
     @GetMapping(value = "/RegisterSend")
     public Boolean code(@RequestParam String phone) {
         //首先先验证手机号是否注册过。
-        boolean isExist = userMapper.findByPhone(phone);
-        if(!isExist){
+        if(userMapper.findByPhone(phone)==null){
             //1、使用随机生成验证码的工具来生成随机验证码。
             String code = RandomUtil.getFourBitRandom();//生成验证码的随机值
             //2.使用Map来进行code的存储映射，然后使得短发发送方法进行业务。

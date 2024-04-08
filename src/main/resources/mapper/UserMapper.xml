@@ -13,7 +13,7 @@
         Values (#{phone},#{password})
     </insert>
 
-    <select id="findByPhone" resultType="boolean">
+    <select id="findByPhone" resultType="String">
         SELECT users.id from smartleafhub.users
         WHERE phone_number=#{phone}
     </select>
