@@ -2,6 +2,7 @@ package com.anranruozhu.api;
 
 import com.anranruozhu.common.Result;
 import com.anranruozhu.entry.User;
+import com.anranruozhu.entry.registerInfo;
 import com.anranruozhu.service.LoginService;
 import com.anranruozhu.service.RegisterService;
 import lombok.extern.slf4j.Slf4j;
@@ -32,19 +33,19 @@ public class AuthController {
     }
     // 注册接口
     @PostMapping("/register")
-    public Result register(@RequestParam String phone,@RequestParam String password,@RequestParam String code1) {
+    public Result register(@RequestBody registerInfo ri) {
         // 处理注册逻辑
         // 返回注册结果
         //1、从redis中获取验证码，如果获取到就直接返回
-        String code = redisTemplate.opsForValue().get(phone);
+        String code = redisTemplate.opsForValue().get(ri.getPhone());
         log.info(code);
         Result rs=new Result();
         rs.setCode(500);
         rs.setMsg("验证码错误");
-        if(code1.equals(code)){
+        if(ri.getCode().equals(code)){
             //验证码验证注册后删除对应值
-            redisTemplate.delete(phone);
-            return registerService.register(phone,password);
+            redisTemplate.delete(ri.getPhone());
+            return registerService.register(ri.getPhone(),ri.getPassword());
         }else{
             return rs;
         }

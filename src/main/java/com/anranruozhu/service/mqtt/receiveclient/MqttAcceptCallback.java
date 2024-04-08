@@ -17,7 +17,6 @@ public class MqttAcceptCallback implements MqttCallbackExtended {
     private MqttAcceptClient mqttAcceptClient;
     @Autowired
     private Action action;
-
     /**
      * 客户端断开后触发
      *
@@ -25,20 +24,14 @@ public class MqttAcceptCallback implements MqttCallbackExtended {
      */
     @Override
     public void connectionLost(Throwable throwable) {
-
-
         log.info("【MQTT-消费端】连接断开，可以做重连");
         if (MqttAcceptClient.getMqttClient() == null || !MqttAcceptClient.getMqttClient().isConnected()) {
-
-
             log.info("【MQTT-消费端】emqx重新连接....................................................");
             mqttAcceptClient.reconnection();
         }
     }
-
     /**
      * 客户端收到消息触发
-     *
      * @param topic       主题
      * @param mqttMessage 消息
      */
@@ -55,7 +48,6 @@ public class MqttAcceptCallback implements MqttCallbackExtended {
             action.goB(s);
         };
     }
-
     /**
      * 发布消息成功
      *
