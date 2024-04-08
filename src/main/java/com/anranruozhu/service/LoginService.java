@@ -23,7 +23,6 @@ public class LoginService {
     @Autowired
     private UserMapper userMapper;
     Result result=new Result();
-
     public Result login(String phone, String password) {
 
         String encodedPwd = MD5.md5(password, phone);

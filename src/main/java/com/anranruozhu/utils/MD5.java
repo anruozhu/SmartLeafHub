@@ -181,8 +181,4 @@ public class MD5 {
 
         return md5StrBuff.toString();
     }
-
-    public static void main(String[] args) {
-        System.out.println(MD5.md5("admin", "8pgby"));
-    }
 }

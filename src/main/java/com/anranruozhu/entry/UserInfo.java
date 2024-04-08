@@ -17,4 +17,6 @@ public class UserInfo {
     private String password;
     @NonNull
     private String phoneNumber;
+    private String email;
+    private String address;
 }
