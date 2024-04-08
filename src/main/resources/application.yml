@@ -30,3 +30,16 @@ token:
   refreshTime: 300000
   secretKey: 096013
   expiresTime: 3600000
+
+mqtt:
+  hostUrl: tcp://localhost:1883
+  username: admin
+  password: public
+  client-id: mqtt_test009
+  cleanSession: true
+  reconnect: true
+  timeout: 100
+  keepAlive: 100
+  defaultTopic: bcd
+  isOpen: true
+  qos: 1
