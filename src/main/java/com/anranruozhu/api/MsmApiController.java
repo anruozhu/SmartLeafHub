@@ -32,11 +32,10 @@ public class MsmApiController {
     private RedisTemplate<String, String> redisTemplate;    //注入redis
     //发送短信验证码
     @ApiOperation(value = "发送短信验证码")
-    @GetMapping(value = "/send/")
+    @GetMapping(value = "/RegisterSend")
     public Boolean code(@RequestParam String phone) {
         //首先先验证手机号是否注册过。
         boolean isExist = userMapper.findByPhone(phone);
-
         if(!isExist){
             //1、使用随机生成验证码的工具来生成随机验证码。
             String code = RandomUtil.getFourBitRandom();//生成验证码的随机值

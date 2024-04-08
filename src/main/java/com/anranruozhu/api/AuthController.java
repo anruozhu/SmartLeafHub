@@ -42,6 +42,8 @@ public class AuthController {
         rs.setCode(500);
         rs.setMsg("验证码错误");
         if(code1.equals(code)){
+            //验证码验证注册后删除对应值
+            redisTemplate.delete(phone);
             return registerService.register(phone,password);
         }else{
             return rs;
