@@ -36,12 +36,10 @@ public class MsmApiController {
         //1、从redis中获取验证码，如果获取到就直接返回
         String code = redisTemplate.opsForValue().get(phone);
         if(!StringUtils.isEmpty(code)) return false;
-
         //2、如果获取不到，就进行阿里云发送
         code = RandomUtil.getFourBitRandom();//生成验证码的随机值
         Map<String,Object> param = new HashMap<>();
         param.put("code", code);
-
         //调用方法
         boolean isSend = msmService.send(param,phone);
         if(isSend) {
