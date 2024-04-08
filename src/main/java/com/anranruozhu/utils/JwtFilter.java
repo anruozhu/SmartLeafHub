@@ -22,8 +22,6 @@ import java.util.Map;
 @Slf4j
 @WebFilter(filterName = "JwtFilter", urlPatterns = "/secure/*")
 public class JwtFilter implements Filter {
-//    @Autowired
-//    private RedisTemplate redisTemplate;
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
     }
