@@ -17,9 +17,15 @@ spring:
   redis:
     host: 139.155.150.150
     port: 6379
-    jedis:
+    database: 0
+    timeout: 1800000
+    lettuce:
       pool:
-        max-active: 8
+        max-active: 20
+        max-wait: 1
+        min-idle: 0
+        max-idle: 5
+    password: 096013Xyz
 token:
   refreshTime: 300000
   secretKey: 096013

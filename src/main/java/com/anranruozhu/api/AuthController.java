@@ -29,10 +29,9 @@ public class AuthController {
     }
     // 注册接口
     @PostMapping("/register")
-    public Result register(@RequestBody UserInfo userinfo) {
+    public Result register(@RequestParam String phone,@RequestParam String password) {
         // 处理注册逻辑
         // 返回注册结果
-        log.info(userinfo.getPhoneNumber()+userinfo.getPassword());
-        return registerService.register(userinfo);
+        return registerService.register(phone,password);
     }
 }
