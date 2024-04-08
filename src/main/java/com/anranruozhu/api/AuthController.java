@@ -2,7 +2,6 @@ package com.anranruozhu.api;
 
 import com.anranruozhu.common.Result;
 import com.anranruozhu.entry.User;
-import com.anranruozhu.entry.UserInfo;
 import com.anranruozhu.service.LoginService;
 import com.anranruozhu.service.RegisterService;
 import lombok.extern.slf4j.Slf4j;
