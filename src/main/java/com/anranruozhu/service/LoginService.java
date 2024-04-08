@@ -28,12 +28,14 @@ public class LoginService {
 
         String encodedPwd = MD5.md5(password, phone);
         User user= userMapper.login(phone, encodedPwd);
+        JSONObject json = new JSONObject();
+        Result result=new Result();
         if (user!=null) {
             log.info("登录成功！生成token！");
             String token = JwtUtil.createToken(user);
             result.setCode(200);
             result.setMsg("登录成功！");
-            JSONObject json =  new JSONObject()
+            json =  new JSONObject()
                     .set("token", token)
                     .set("user", new JSONObject()
                             .set("id", user.getId())
@@ -47,7 +49,7 @@ public class LoginService {
             if (phone == null || phone.length() == 0) {
                 result.setMsg("电话号码不能为空");
             }else{
-                result.setMsg("密码错误！");
+                result.setMsg("账号或密码错误！");
             }
             return result;
         }

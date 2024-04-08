@@ -24,8 +24,8 @@ public class AuthController {
     private RegisterService registerService;
     // 登录接口
     @PostMapping("/login")
-    public Result login(@RequestParam String phone, @RequestParam String password) {
-        return loginService.login(phone,password);
+    public Result login(@RequestBody User user) {
+        return loginService.login(user.getPhoneNumber(), user.getPassword());
     }
     // 注册接口
     @PostMapping("/register")
