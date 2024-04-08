@@ -6,35 +6,22 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * @author anranruozhu
+ * @ClassName MqttConfig
+ * @Description 启动时自动加载的配置类。
+ * @create 2024/3/28 11:16
+ **/
 @Configuration
 public class MqttConfig {
-
     @Autowired
-    private MqttAcceptClient mqttAcceptClient1, mqttAcceptClient2;
-    /**
-     * 订阅mqtt
-     *
-     * @return
-     */
+    private MqttAcceptClient mqttAcceptClient;
 
     @Conditional(MqttCondition.class)
     @Bean
-    public void createReceiver() {
-        mqttAcceptClient1.connect();
-        String topic1 = "recieveTopic1";
-        mqttAcceptClient1.subscribe(topic1,1);
-
-        String topic2 = "recieveTopic";
-        mqttAcceptClient1.subscribe(topic2,1);
+    public MqttAcceptClient getMqttSendClient(){
+        mqttAcceptClient.connect();
+        return mqttAcceptClient;
     }
 
-
-
-
-
-
-
-
-
 }
-

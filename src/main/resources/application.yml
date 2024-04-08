@@ -35,7 +35,7 @@ mqtt:
   hostUrl: tcp://localhost:1883
   username: admin
   password: public
-  client-id: mqtt_test009
+  client-id: mqtt_test001
   cleanSession: true
   reconnect: true
   timeout: 100
