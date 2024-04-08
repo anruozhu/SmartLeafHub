@@ -2,6 +2,7 @@ package com.anranruozhu.service.mqtt.receiveclient;
 
 import cn.hutool.core.date.DateUtil;
 import com.anranruozhu.utils.MqttProperties;
+import lombok.extern.slf4j.Slf4j;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -13,10 +14,10 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+@Slf4j
 @Component
 public class MqttAcceptClient {
 
-    private static final Logger logger = LoggerFactory.getLogger(MqttAcceptClient.class);
 
     @Autowired
     private MqttAcceptCallback mqttAcceptCallback;
@@ -24,28 +25,27 @@ public class MqttAcceptClient {
     @Autowired
     private MqttProperties mqttProperties;
 
-    public static MqttClient client;
 
-    private static MqttClient getClient() {
-        return client;
+    private static MqttClient mqttClient;
+
+    public static MqttClient getMqttClient() {
+        return mqttClient;
     }
 
-    private static void setClient(MqttClient client) {
-        MqttAcceptClient.client = client;
+    public static void setMqttClient(MqttClient mqttClient) {
+        MqttAcceptClient.mqttClient = mqttClient;
     }
+
 
     /**
      * 客户端连接
      */
     public void connect() {
-        MqttClient client;
-        Date date3 = DateUtil.date(System.currentTimeMillis());
-//        //时间
-        String formatDateTime = DateUtil.formatDateTime(date3);
 
+
+        MqttClient client;
         try {
-//            client = new MqttClient(mqttProperties.getHostUrl(),System.currentTimeMillis()+"c-002", new MemoryPersistence());
-            client = new MqttClient(mqttProperties.getHostUrl(),formatDateTime, new MemoryPersistence());
+            client = new MqttClient(mqttProperties.getHostUrl(), mqttProperties.getClientId(), new MemoryPersistence());
             MqttConnectOptions options = new MqttConnectOptions();
             options.setUserName(mqttProperties.getUsername());
             options.setPassword(mqttProperties.getPassword().toCharArray());
@@ -53,7 +53,7 @@ public class MqttAcceptClient {
             options.setKeepAliveInterval(mqttProperties.getKeepAlive());
             options.setAutomaticReconnect(mqttProperties.getReconnect());
             options.setCleanSession(mqttProperties.getCleanSession());
-            MqttAcceptClient.setClient(client);
+            MqttAcceptClient.setMqttClient(client);
             try {
                 // 设置回调
                 client.setCallback(mqttAcceptCallback);
@@ -71,7 +71,7 @@ public class MqttAcceptClient {
      */
     public void reconnection() {
         try {
-            client.connect();
+            mqttClient.connect();
         } catch (MqttException e) {
             e.printStackTrace();
         }
@@ -84,9 +84,10 @@ public class MqttAcceptClient {
      * @param qos   连接方式
      */
     public void subscribe(String topic, int qos) {
-        logger.info("==============开始订阅主题==============" + topic);
+
+        log.info("==============开始订阅主题==============" + topic);
         try {
-            client.subscribe(topic, qos);
+            mqttClient.subscribe(topic, qos);
         } catch (MqttException e) {
             e.printStackTrace();
         }
@@ -98,10 +99,12 @@ public class MqttAcceptClient {
      * @param topic
      */
     public void unsubscribe(String topic) {
-        logger.info("==============开始取消订阅主题==============" + topic);
+        log.info("==============开始取消订阅主题==============" + topic);
         try {
-            client.unsubscribe(topic);
+            mqttClient.unsubscribe(topic);
         } catch (MqttException e) {
+
+
             e.printStackTrace();
         }
     }
