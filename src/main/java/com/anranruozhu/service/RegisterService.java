@@ -22,9 +22,8 @@ public class RegisterService {
     private UserMapper userMapper;
     Result result=new Result();
     public Result register(UserInfo userinfo) {
-
-        //String pwd = MD5.md5(userinfo.getPassword(), userinfo.getPhoneNumber());
-        userMapper.register(userinfo.getPhoneNumber(),userinfo.getPassword());
+        String pwd = MD5.md5(userinfo.getPassword(), userinfo.getPhoneNumber());
+        userMapper.register(userinfo.getPhoneNumber(),pwd);
         result.setCode(200);
         result.setData("注册成功");
         result.setMsg("ok");

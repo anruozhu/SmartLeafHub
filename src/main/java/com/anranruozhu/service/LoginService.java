@@ -25,6 +25,7 @@ public class LoginService {
     Result result=new Result();
 
     public Result login(String phone, String password) {
+
         String encodedPwd = MD5.md5(password, phone);
         User user= userMapper.login(phone, encodedPwd);
         if (user!=null) {
@@ -43,7 +44,11 @@ public class LoginService {
         }else{
             log.info("登录失败！");
             result.setCode(400);
-            result.setMsg("用户名或密码错误！");
+            if (phone == null || phone.length() == 0) {
+                result.setMsg("电话号码不能为空");
+            }else{
+                result.setMsg("密码错误！");
+            }
             return result;
         }
     }

@@ -2,6 +2,7 @@ package com.anranruozhu.entry;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.NonNull;
 
 /**
  * @author anranruozhu
@@ -12,6 +13,8 @@ import lombok.Data;
 @Data
 public class UserInfo {
     private String name;
+    @NonNull
     private String password;
+    @NonNull
     private String phoneNumber;
 }
