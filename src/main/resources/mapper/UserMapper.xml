@@ -12,4 +12,9 @@
         INSERT INTO smartleafhub.users(phone_number,password)
         Values (#{phone},#{password})
     </insert>
+
+    <select id="findByPhone" resultType="boolean">
+        SELECT users.id from smartleafhub.users
+        WHERE phone_number=#{phone}
+    </select>
 </mapper>

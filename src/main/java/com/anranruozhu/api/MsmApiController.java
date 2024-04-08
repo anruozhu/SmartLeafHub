@@ -1,6 +1,7 @@
 package com.anranruozhu.api;
 
 
+import com.anranruozhu.mapper.UserMapper;
 import com.anranruozhu.service.SmsService;
 import com.anranruozhu.utils.RandomUtil;
 import io.swagger.annotations.ApiOperation;
@@ -25,30 +26,34 @@ import java.util.concurrent.TimeUnit;
 public class MsmApiController {
     @Autowired
     private SmsService msmService;
-
+    @Autowired
+    private UserMapper userMapper;
     @Autowired
     private RedisTemplate<String, String> redisTemplate;    //注入redis
-
     //发送短信验证码
     @ApiOperation(value = "发送短信验证码")
     @GetMapping(value = "/send/")
     public Boolean code(@RequestParam String phone) {
-        //1、从redis中获取验证码，如果获取到就直接返回
-        String code = redisTemplate.opsForValue().get(phone);
-        if(!StringUtils.isEmpty(code)) return false;
-        //2、如果获取不到，就进行阿里云发送
-        code = RandomUtil.getFourBitRandom();//生成验证码的随机值
-        Map<String,Object> param = new HashMap<>();
-        param.put("code", code);
-        //调用方法
-        boolean isSend = msmService.send(param,phone);
-        if(isSend) {
-            //往redis中设置数据：key、value、过期值、过期时间单位  MINUTES代表分钟
-            redisTemplate.opsForValue().set(phone, code,5, TimeUnit.MINUTES);
-            return true;
-        } else {
-            return false;
+        //首先先验证手机号是否注册过。
+        boolean isExist = userMapper.findByPhone(phone);
+
+        if(!isExist){
+            //1、使用随机生成验证码的工具来生成随机验证码。
+            String code = RandomUtil.getFourBitRandom();//生成验证码的随机值
+            //2.使用Map来进行code的存储映射，然后使得短发发送方法进行业务。
+            Map<String,Object> param = new HashMap<>();
+            param.put("code", code);
+            //调用方法
+            boolean isSend = msmService.send(param,phone);
+            if(isSend) {
+                //往redis中设置数据：key、value、过期值、过期时间单位  MINUTES代表分钟
+                redisTemplate.opsForValue().set(phone, code,5, TimeUnit.MINUTES);
+                return true;
+            } else {
+                return false;
+            }
         }
+        return false;
     }
 
 }

@@ -22,7 +22,6 @@ public class RegisterService {
     private UserMapper userMapper;
     Result result=new Result();
     public Result register(String phone,String password) {
-
         String pwd = MD5.md5(password, phone);
         userMapper.register(phone,pwd);
         result.setCode(200);

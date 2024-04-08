@@ -45,8 +45,8 @@ public class SmsServiceImpl implements SmsService {
             request.setAction("SendSms");
 
             request.putQueryParameter("PhoneNumbers", phone);   //手机号
-            request.putQueryParameter("SignName", "SmartLeafHub");    //申请阿里云 签名名称（暂时用阿里云测试的，自己还不能注册签名）
-            request.putQueryParameter("TemplateCode", "SMS_465394594"); //申请阿里云 模板code（用的也是阿里云测试的）
+            request.putQueryParameter("SignName", "中软国际第24组实训项目");    //申请阿里云 签名名称（暂时用阿里云测试的，自己还不能注册签名）
+            request.putQueryParameter("TemplateCode", "SMS_465433541"); //申请阿里云 模板code（用的也是阿里云测试的）
             request.putQueryParameter("TemplateParam", JSONObject.toJSONString(param));
 
             try {
