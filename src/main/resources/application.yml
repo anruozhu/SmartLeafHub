@@ -30,10 +30,3 @@ token:
   refreshTime: 300000
   secretKey: 096013
   expiresTime: 3600000
-aliyun:
-  accessKeyId: LTAI5t7v9FU86XVJ5R7t9dv4
-  accessKeySecret: ChRP42FkZ6r7REWMCHzC6Z5Fp6cdYt
-  sms:
-    signName: SmartLeafHub
-    templateCode: SMS_465394594
-    expireTime: 300
