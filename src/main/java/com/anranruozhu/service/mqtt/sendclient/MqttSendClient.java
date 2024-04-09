@@ -1,11 +1,14 @@
 package com.anranruozhu.service.mqtt.sendclient;
 
+import cn.hutool.json.JSONObject;
 import com.anranruozhu.utils.MqttProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.UUID;
 
 @Slf4j
 @Component
@@ -34,8 +37,8 @@ public class MqttSendClient {
     public void connect(){
         MqttClient client = null;
         try {
-            //String uuid = UUID.randomUUID().toString().replaceAll("-",""); //设置每一个客户端的id
-            client = new MqttClient(mqttProperties.getHostUrl(),mqttProperties.getClientId() , new MemoryPersistence());
+            String uuid = UUID.randomUUID().toString().replaceAll("-",""); //设置每一个客户端的id
+            client = new MqttClient(mqttProperties.getHostUrl(),uuid , new MemoryPersistence());
             MqttConnectOptions options = new MqttConnectOptions();
             options.setUserName(mqttProperties.getUsername());
             options.setPassword(mqttProperties.getPassword().toCharArray());
@@ -89,6 +92,31 @@ public class MqttSendClient {
             log.info("消息发送成功");
         } catch (Exception e) {
             log.error("mqtt发送消息异常:",e);
+        }
+    }
+    /**
+     * 关闭连接
+     *
+     * @param mqttClient
+     */
+    public  void disconnect() {
+        try {
+            if (mqttClient != null) mqttClient.disconnect();
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 释放资源
+     *
+     * @param mqttClient
+     */
+    public  void close() {
+        try {
+            if (mqttClient != null) mqttClient.close();
+        } catch (MqttException e) {
+            e.printStackTrace();
         }
     }
 }

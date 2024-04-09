@@ -41,8 +41,6 @@ public class MqttAcceptClient {
      * 客户端连接
      */
     public void connect() {
-
-
         MqttClient client;
         try {
             client = new MqttClient(mqttProperties.getHostUrl(), mqttProperties.getClientId(), new MemoryPersistence());
