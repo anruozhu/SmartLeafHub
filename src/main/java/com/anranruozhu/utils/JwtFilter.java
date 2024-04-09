@@ -2,6 +2,7 @@ package com.anranruozhu.utils;
 
 import com.auth0.jwt.interfaces.Claim;
 import lombok.extern.slf4j.Slf4j;
+import com.auth0.jwt.JWT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -11,6 +12,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -41,6 +43,14 @@ public class JwtFilter implements Filter {
         else {
             if (token == null) {
                 response.getWriter().write("没有token！");
+                return;
+            }
+            // token 超时判断
+            Date expireTime = JWT.decode(token).getExpiresAt();
+            Date currentTime = new Date(System.currentTimeMillis());
+            if ( currentTime.before(expireTime)){
+                response.setStatus(401);
+                response.getWriter().write("token 已过期");
                 return;
             }
             Map<String, Claim> userData = JwtUtil.verifyToken(token);

@@ -31,14 +31,14 @@ public class JwtUtil {
     /**
      * 过期时间
      **/
-    private static final long EXPIRATION = 2*60*60L;//单位为秒
+    private static final long EXPIRATION = 3000*2*60*60L;//单位为秒
 
     /**
      * 生成用户token,设置token超时时间
      */
     public static String createToken(User user) {
         //过期时间
-        Date expireDate = new Date(System.currentTimeMillis() + EXPIRATION * 1000);
+        Date expireDate = new Date(System.currentTimeMillis() + EXPIRATION );
         Map<String, Object> map = new HashMap<>();
         map.put("alg", "HS256");
         map.put("typ", "JWT");

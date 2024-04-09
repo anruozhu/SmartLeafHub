@@ -20,7 +20,6 @@ public class MqttSendClient {
     private static MqttClient mqttClient;
 
     private static MqttClient getClient() {
-
         return mqttClient;
     }
 
