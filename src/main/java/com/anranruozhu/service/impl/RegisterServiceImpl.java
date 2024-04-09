@@ -6,6 +6,7 @@ import com.anranruozhu.mapper.UserMapper;
 import com.anranruozhu.service.RegisterService;
 import com.anranruozhu.utils.MD5;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
  * @create 2024/4/9 上午9:33
  **/
 @Data
+@Slf4j
 @Component
 public class RegisterServiceImpl implements RegisterService {
     @Autowired
@@ -26,9 +28,19 @@ public class RegisterServiceImpl implements RegisterService {
     @Override
     public Result register(String phone, String password) {
         String pwd = MD5.md5(password, phone);
-        userMapper.register(phone,pwd);
         int id= Integer.parseInt(userMapper.findByPhone(phone));
-        userInfoMapper.InsertID(id);
+        try {
+            userMapper.register(phone,pwd);
+        }catch(Exception e){
+            log.error(e.getMessage());
+            throw new RuntimeException("用户注册失败");
+        }
+        try {
+            userInfoMapper.InsertID(id);
+        }catch(Exception e){
+            log.error(e.getMessage());
+            throw new RuntimeException("用户注册失败");
+        }
         result.setCode(200);
         result.setData("注册成功");
         result.setMsg("ok");
