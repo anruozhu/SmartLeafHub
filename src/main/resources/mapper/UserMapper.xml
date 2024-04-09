@@ -20,6 +20,6 @@
 
     <update id="UpdatePassword">
         UPDATE users SET password=#{password}
-        WHERE phone_number=#{phone}
+        WHERE id=#{id}
     </update>
 </mapper>

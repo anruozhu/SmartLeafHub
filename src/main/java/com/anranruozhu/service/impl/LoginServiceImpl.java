@@ -58,6 +58,28 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public Result UpdatePassword(String phone, String password) {
-        return null;
+        Result res = new Result();
+        String encodedPwd = MD5.md5(password,phone);
+        try {
+            userMapper.UpdatePassword(phone,encodedPwd);
+        }catch (Exception e){
+            log.error(e.getMessage());
+        }
+        res.setCode(200);
+        res.setMsg("密码更新成功");
+        res.setData(phone);
+        return res;
+    }
+
+    @Override
+    public boolean isIdOk(int id, String phone) {
+        boolean res;
+        try {
+           res =  id == Integer.parseInt(userMapper.findByPhone(phone));
+        }catch (Exception e){
+            log.error(e.getMessage());
+            res = false;
+        }
+        return res;
     }
 }

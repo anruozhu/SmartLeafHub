@@ -26,4 +26,5 @@ public interface LoginService {
      */
     Result login(String phone, String password) ;
     Result UpdatePassword(String phone, String password);
+    boolean isIdOk(int id, String phone);
 }
