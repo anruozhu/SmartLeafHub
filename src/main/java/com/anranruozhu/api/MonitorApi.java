@@ -2,8 +2,10 @@ package com.anranruozhu.api;
 
 import com.anranruozhu.common.Result;
 import com.anranruozhu.entity.UserInfo;
+import com.anranruozhu.entity.soilData;
 import com.anranruozhu.mapper.UserMapper;
 import com.anranruozhu.service.LoginService;
+import com.anranruozhu.service.MonitorService;
 import com.anranruozhu.service.UserInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @author anranruozhu
@@ -22,21 +25,23 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/secure")
 @Slf4j
 public class MonitorApi {
+    @Autowired
+    private MonitorService monitorService;
 
     //获取实时的温度
     @GetMapping("/temperature")
     public Result getTemperature(){
-        return null;
+        return monitorService.getNewTemperature();
     }
     //获取实时的湿度
     @GetMapping("/humidity")
     public Result getHumidity(){
-        return null;
+        return monitorService.getNewHumidity();
     }
     //获取实时的光照强度
     @GetMapping("/light-intensity")
-    public String getLightIntensity() {
-        return null;
+    public Result getLightIntensity() {
+        return monitorService.getNewLightIntensity();
     }
     //获取实时的风扇状态
     @GetMapping("/fan-status")

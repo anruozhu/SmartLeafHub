@@ -7,4 +7,17 @@
         INSERT INTO smartleafhub.sensor_data(air_temperature, light_intensity)
             VALUES(#{airTemperature},#{lightIntensity})
     </insert>
+
+    <select id="ShowLastTemperature" resultType="java.lang.Float">
+        SELECT air_temperature
+        FROM smartleafhub.sensor_data
+        ORDER BY reading_time DESC LIMIT 1;
+    </select>
+
+    <select id="ShowLastlightIntensity" resultType="float">
+        SELECT air_temperature
+        FROM smartleafhub.sensor_data
+        ORDER BY reading_time DESC
+        LIMIT 1
+    </select>
 </mapper>
