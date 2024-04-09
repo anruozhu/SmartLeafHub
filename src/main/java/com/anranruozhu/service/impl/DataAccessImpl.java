@@ -29,12 +29,15 @@ public class DataAccessImpl implements DataAccess {
         JSONObject jsonObject = JSONUtil.parseObj(message);
         float lightINtensity = jsonObject.getFloat("light_intensity");
         float airTemperature = jsonObject.getFloat("air_temperature");
+
         try {
             sersorDataMapper.addData(airTemperature,lightINtensity);
         }catch (Exception e){
             log.error("error: " + e.getMessage());
             throw new RuntimeException("光照气温保存失败");
         }
+        log.info("光强为："+lightINtensity);
+        log.info("气温为："+airTemperature);
     }
 
     @Override
@@ -47,5 +50,6 @@ public class DataAccessImpl implements DataAccess {
             log.error("error: " + e.getMessage());
             throw new RuntimeException("土壤数据保存失败");
         }
+        log.info("土壤湿度为："+soil_humidity);
     }
 }

@@ -97,7 +97,7 @@ public class MqttAcceptCallback implements MqttCallbackExtended {
         log.info("--------------------【MQTT-消费端】连接成功！--------------------");
         // 以/#结尾表示订阅所有以test开头的主题
         // 订阅所有机构主题
-        mqttAcceptClient.subscribe("topicA", 0);
-        mqttAcceptClient.subscribe("topicB", 1);
+        mqttAcceptClient.subscribe(TOPICA, 0);
+            mqttAcceptClient.subscribe( TOPICB, 0);
     }
 }
