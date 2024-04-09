@@ -8,7 +8,7 @@
         WHERE phone_number=#{phone} AND password=#{password}
     </select>
 
-    <insert id="register" >
+    <insert id="register">
         INSERT INTO smartleafhub.users(phone_number,password)
         Values (#{phone},#{password})
     </insert>

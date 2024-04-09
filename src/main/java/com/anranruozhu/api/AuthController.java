@@ -3,6 +3,7 @@ package com.anranruozhu.api;
 import com.anranruozhu.common.Result;
 import com.anranruozhu.entity.User;
 import com.anranruozhu.entity.registerInfo;
+import com.anranruozhu.mapper.UserInfoMapper;
 import com.anranruozhu.service.LoginService;
 import com.anranruozhu.service.RegisterService;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,8 @@ public class AuthController {
     @Autowired
     private RegisterService registerService;
     @Autowired
+    private UserInfoMapper userInfoMapper;
+    @Autowired
     private RedisTemplate<String, String> redisTemplate;    //注入redis
     // 登录接口
     @PostMapping("/login")
@@ -46,6 +49,7 @@ public class AuthController {
         if(ri.getCode().equals(code)){
             //验证码验证注册后删除对应值
             redisTemplate.delete(ri.getPhone());
+
             return registerService.register(ri.getPhone(),ri.getPassword());
         }else{
             return rs;
