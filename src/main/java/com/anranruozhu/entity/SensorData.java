@@ -1,4 +1,4 @@
-package com.anranruozhu.entry;
+package com.anranruozhu.entity;
 
 import lombok.Data;
 

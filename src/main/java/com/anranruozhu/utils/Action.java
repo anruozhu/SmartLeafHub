@@ -7,7 +7,7 @@ import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import com.anranruozhu.entry.SensorData;
+import com.anranruozhu.entity.SensorData;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -23,7 +23,6 @@ import java.util.List;
 @Component
 public class Action {
     private List<SensorData> ls=new ArrayList<>();
-
     private static final Logger logger = LoggerFactory.getLogger(MqttAcceptCallback.class);
     public void goA(String message) throws SQLException {
         // 数据库连接信息
