@@ -55,4 +55,9 @@ public class LoginServiceImpl implements LoginService {
             return result;
         }
     }
+
+    @Override
+    public Result UpdatePassword(String phone, String password) {
+        return null;
+    }
 }
