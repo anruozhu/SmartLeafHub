@@ -17,8 +17,8 @@ public class MqttAcceptCallback implements MqttCallbackExtended {
     private MqttAcceptClient mqttAcceptClient;
     @Autowired
     private DataAccess da;
-    private static final String TOPICA = "tobacco_01_a";
-    private static final String TOPICB = "tobacco_01_b";
+    private static final String TOPIC_A = "tobacco_01_a";
+    private static final String TOPIC_B = "tobacco_01_b";
 
     /**
      * 客户端断开后触发
@@ -44,9 +44,9 @@ public class MqttAcceptCallback implements MqttCallbackExtended {
         log.info("【MQTT-消费端】接收消息Qos : " + mqttMessage.getQos());
         String s=new String(mqttMessage.getPayload());
         log.info("【MQTT-消费端】接收消息内容 : " + s);
-        if(topic.equals(TOPICA)){
+        if(topic.equals(TOPIC_A)){
             da.SaveSersor(s);
-        } else if (topic.equals(TOPICB)) {
+        } else if (topic.equals(TOPIC_B)) {
             da.SaveSoil(s);
         };
     }
@@ -57,28 +57,18 @@ public class MqttAcceptCallback implements MqttCallbackExtended {
      */
     @Override
     public void deliveryComplete(IMqttDeliveryToken token) {
-
-
         String[] topics = token.getTopics();
         for (String topic : topics) {
-
-
             log.info("【MQTT-消费端】向主题：" + topic + "发送消息成功！");
         }
         try {
-
-
             MqttMessage message = token.getMessage();
             byte[] payload = message.getPayload();
             String s = new String(payload, "UTF-8");
             log.info("【MQTT-消费端】消息的内容是：" + s);
         } catch (MqttException e) {
-
-
             e.printStackTrace();
         } catch (UnsupportedEncodingException e) {
-
-
             e.printStackTrace();
         }
     }
@@ -91,13 +81,11 @@ public class MqttAcceptCallback implements MqttCallbackExtended {
      */
     @Override
     public void connectComplete(boolean b, String s) {
-
         System.out.println("s: " + s);
-
         log.info("--------------------【MQTT-消费端】连接成功！--------------------");
         // 以/#结尾表示订阅所有以test开头的主题
         // 订阅所有机构主题
-        mqttAcceptClient.subscribe(TOPICA, 0);
-            mqttAcceptClient.subscribe( TOPICB, 0);
+        mqttAcceptClient.subscribe(TOPIC_A, 0);
+        mqttAcceptClient.subscribe( TOPIC_B, 0);
     }
 }

@@ -5,5 +5,5 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface SersorDataMapper {
-    void addData(float lightINtensity,float airTemperature);
+    void addData(float airTemperature,float lightIntensity);
 }

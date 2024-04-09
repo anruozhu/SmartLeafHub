@@ -4,7 +4,7 @@
 <mapper namespace="com.anranruozhu.mapper.SersorDataMapper">
 
     <insert id="addData" >
-        INSERT INTO smartleafhub.sensor_data(light_intensity, air_temperature)
-            VALUES(#{lightIntensity}, #{airTemperature})
+        INSERT INTO smartleafhub.sensor_data(air_temperature, light_intensity)
+            VALUES(#{airTemperature},#{lightIntensity})
     </insert>
 </mapper>
