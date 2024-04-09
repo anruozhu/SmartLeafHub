@@ -11,4 +11,5 @@ public interface SmsService {
      * @return 是否发送成功
      */
     boolean send(Map<String, Object> param, String phone);
+    boolean send1(Map<String, Object> param, String phone);
 }

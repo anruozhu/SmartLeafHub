@@ -17,4 +17,9 @@
         SELECT users.id from smartleafhub.users
         WHERE phone_number=#{phone}
     </select>
+
+    <update id="UpdatePassword">
+        UPDATE users SET password=#{password}
+        WHERE phone_number=#{phone}
+    </update>
 </mapper>

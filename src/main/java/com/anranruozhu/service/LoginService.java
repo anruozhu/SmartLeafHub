@@ -25,4 +25,5 @@ public interface LoginService {
      * @return Result
      */
     Result login(String phone, String password) ;
+    Result UpdatePassword(String phone, String password);
 }
