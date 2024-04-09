@@ -1,6 +1,5 @@
-package com.anranruozhu.entry;
+package com.anranruozhu.entity;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NonNull;
 

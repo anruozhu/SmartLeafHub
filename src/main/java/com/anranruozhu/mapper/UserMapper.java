@@ -1,6 +1,6 @@
 package com.anranruozhu.mapper;
 
-import com.anranruozhu.entry.User;
+import com.anranruozhu.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
