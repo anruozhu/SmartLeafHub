@@ -30,7 +30,10 @@ public class MonitorApi {
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
     @PostMapping("/SetUserInfo")
-    public Result SetUserInfo(@RequestBody UserInfo userInfo){
+    public Result SetUserInfo(@RequestBody UserInfo userInfo,HttpServletRequest request){
+        int id= (int) request.getAttribute("id");
+        log.info("id==="+id);
+        userInfo.setId(id);
         return userInfoService.UpdateUserInfo(userInfo);
     }
     @PostMapping("/UpdatePassword")

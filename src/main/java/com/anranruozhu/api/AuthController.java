@@ -26,8 +26,6 @@ public class AuthController {
     @Autowired
     private RegisterService registerService;
     @Autowired
-    private UserInfoMapper userInfoMapper;
-    @Autowired
     private RedisTemplate<String, String> redisTemplate;    //注入redis
     // 登录接口
     @PostMapping("/login")
