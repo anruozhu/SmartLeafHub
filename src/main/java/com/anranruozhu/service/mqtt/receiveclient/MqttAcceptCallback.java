@@ -1,6 +1,6 @@
 package com.anranruozhu.service.mqtt.receiveclient;
 
-import com.anranruozhu.utils.Action;
+import com.anranruozhu.service.DataAccess;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
@@ -16,7 +16,10 @@ public class MqttAcceptCallback implements MqttCallbackExtended {
     @Autowired
     private MqttAcceptClient mqttAcceptClient;
     @Autowired
-    private Action action;
+    private DataAccess da;
+    private static final String TOPICA = "tobacco_01_a";
+    private static final String TOPICB = "tobacco_01_b";
+
     /**
      * 客户端断开后触发
      *
@@ -40,12 +43,11 @@ public class MqttAcceptCallback implements MqttCallbackExtended {
         log.info("【MQTT-消费端】接收消息主题 : " + topic);
         log.info("【MQTT-消费端】接收消息Qos : " + mqttMessage.getQos());
         String s=new String(mqttMessage.getPayload());
-
         log.info("【MQTT-消费端】接收消息内容 : " + s);
-        if(topic.equals("topicA")){
-            action.goA(s);
-        } else if (topic.equals("topicB")) {
-            action.goB(s);
+        if(topic.equals(TOPICA)){
+            da.SaveSersor(s);
+        } else if (topic.equals(TOPICB)) {
+            da.SaveSoil(s);
         };
     }
     /**
