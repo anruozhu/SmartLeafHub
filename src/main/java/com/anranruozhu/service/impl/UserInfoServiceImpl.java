@@ -22,16 +22,30 @@ public class UserInfoServiceImpl implements UserInfoService {
     private UserInfoMapper userInfoMapper;
     @Override
     public Result UpdateUserInfo(UserInfo userInfo) {
+        Result res = new Result();
+        if (userInfoMapper.FindByID(userInfo.getId()) == null){
+            log.info("保存用户 id 不存在");
+            res.setCode(400);
+            res.setData(userInfo);
+            res.setMsg("用户 id 不存在");
+            return res;
+        }
         try {
             userInfoMapper.UpdateUserInfo(userInfo);
         }catch(Exception e){
             log.error(e.getMessage());
             throw new RuntimeException("用户个人信息保存失败");
         }
-        Result res = new Result();
         res.setCode(200);
         res.setMsg("用户个人信息保存成功");
         res.setData(userInfo);
         return res;
     }
+
+    @Override
+    public Result FindByID(int id) {
+        userInfoMapper.FindByID(id);
+        return null;
+    }
+
 }

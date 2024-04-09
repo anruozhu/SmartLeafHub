@@ -20,4 +20,8 @@
             </set>
     WHERE id = #{id}
         </update>
+    <select id="FindByID" resultType="com.anranruozhu.entity.UserInfo">
+        SELECT * FROM smartleafhub.userinfo
+        WHERE id=#{id}
+    </select>
 </mapper>

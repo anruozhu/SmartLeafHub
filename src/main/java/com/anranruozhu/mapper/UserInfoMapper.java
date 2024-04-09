@@ -6,5 +6,6 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface UserInfoMapper {
     int InsertID(int id);
+    UserInfo FindByID(int id);
     int UpdateUserInfo(UserInfo userInfo);
 }
