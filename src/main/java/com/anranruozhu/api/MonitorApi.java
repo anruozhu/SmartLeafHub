@@ -23,48 +23,34 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 public class MonitorApi {
 
-    @Autowired
-    private UserInfoService userInfoService;
-    @Autowired
-    private LoginService loginService;
-    @Autowired
-    private RedisTemplate<String, String> redisTemplate;
-    @PostMapping("/SetUserInfo")
-    public Result SetUserInfo(@RequestBody UserInfo userInfo,HttpServletRequest request){
-        int id= (int) request.getAttribute("id");
-        log.info("id==="+id);
-        userInfo.setId(id);
-        return userInfoService.UpdateUserInfo(userInfo);
+    //获取实时的温度
+    @GetMapping("/temperature")
+    public Result getTemperature(){
+        return null;
     }
-    @PostMapping("/UpdatePassword")
-    public Result UpdatePassword(@RequestParam String code1,@RequestParam String phone ,@RequestParam String NewPassword, HttpServletRequest request){
-        // 处理注册逻辑
-        // 返回注册结果
-        //1、从redis中获取验证码，如果获取到就直接返回
-        String code = redisTemplate.opsForValue().get(phone);
-        int id= (int) request.getAttribute("id");
-
-        log.info(code);
-        Result rs=new Result();
-        rs.setCode(500);
-        rs.setMsg("验证码错误");
-        if(code1.equals(code) && loginService.isIdOk(id,phone)){
-            //验证码验证注册后删除对应值
-            redisTemplate.delete(phone);
-            return loginService.UpdatePassword(phone,NewPassword);
-        }else{
-            return rs;
-        }
+    //获取实时的湿度
+    @GetMapping("/humidity")
+    public Result getHumidity(){
+        return null;
     }
-    @GetMapping("/go")
-    public String go(HttpServletRequest request){
-        int id= (int) request.getAttribute("id");
-        return "go"+id;
+    //获取实时的光照强度
+    @GetMapping("/light-intensity")
+    public String getLightIntensity() {
+        return null;
     }
-
-    @RequestMapping("/getUserInfo")
-    public String login() {
-        return "yes";
+    //获取实时的风扇状态
+    @GetMapping("/fan-status")
+    public String getFanStatus(){
+        return null;
     }
-
+    //获取实时的水泵状态
+    @GetMapping("/water-pump-status")
+    public String getWaterPumpStatus(){
+        return null;
+    }
+    //获取实时的led灯状态
+    @GetMapping("led-status")
+    public String getLEDStatus(){
+        return null;
+    }
 }
