@@ -7,5 +7,5 @@ import org.apache.ibatis.annotations.Mapper;
 public interface soilDataMapper {
 
         // 添加土壤数据
-        void addData(soilData sd);
+        void addData(Float soilHumidity);
 }

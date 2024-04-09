@@ -4,6 +4,7 @@
 <mapper namespace="com.anranruozhu.mapper.soilDataMapper">
 
     <insert id="addData">
-
+        INSERT INTO smartleafhub.sensor_data(soil_humidity)
+        VALUES(#{soilHumidity})
     </insert>
 </mapper>
