@@ -11,9 +11,6 @@
         <set><if test="nickname != null">
                nickname = #{nickname},
             </if>
-            <if test="phoneNumber != null">
-                phone_number = #{phoneNumber},
-            </if>
             <if test="email != null">
                 email = #{email},
             </if>
