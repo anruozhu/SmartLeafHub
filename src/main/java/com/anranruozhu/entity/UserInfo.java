@@ -1,7 +1,6 @@
 package com.anranruozhu.entity;
 
 import lombok.Data;
-import lombok.NonNull;
 
 /**
  * @author anranruozhu
@@ -11,11 +10,8 @@ import lombok.NonNull;
  **/
 @Data
 public class UserInfo {
-    private String name;
-    @NonNull
-    private String password;
-    @NonNull
-    private String phoneNumber;
+    private  int id;
+    private String nickname;
     private String email;
     private String address;
 }

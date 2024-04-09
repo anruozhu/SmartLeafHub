@@ -1,11 +1,11 @@
 package com.anranruozhu.api;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.anranruozhu.common.Result;
+import com.anranruozhu.entity.UserInfo;
+import com.anranruozhu.service.UserInfoService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -17,13 +17,22 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("/secure")
 public class MonitorApi {
+
+    @Autowired
+    private UserInfoService userInfoService;
+    @PostMapping("/SetUserInfo")
+    public Result SetUserInfo(@RequestBody UserInfo userInfo){
+        return userInfoService.UpdateUserInfo(userInfo);
+    }
     @GetMapping("/go")
     public String go(HttpServletRequest request){
         int id= (int) request.getAttribute("id");
         return "go"+id;
     }
+
     @RequestMapping("/getUserInfo")
     public String login() {
         return "yes";
     }
+
 }
