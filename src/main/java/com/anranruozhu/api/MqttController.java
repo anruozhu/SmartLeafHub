@@ -1,14 +1,12 @@
 package com.anranruozhu.api;
 
 import cn.hutool.json.JSONObject;
-import com.anranruozhu.common.Result;
 import com.anranruozhu.service.mqtt.sendclient.MqttSendClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 @RestController
 @RequestMapping("/secure")
 public class MqttController {
@@ -24,7 +22,6 @@ public class MqttController {
         json.putOnce("status", ctl);
         return json;
     }
-
     @GetMapping("/watetctl/{ctl}")
     private Object watetctl(@PathVariable String ctl) {
         client1.connect();
