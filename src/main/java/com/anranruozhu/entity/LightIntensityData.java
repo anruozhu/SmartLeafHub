@@ -12,9 +12,8 @@ import java.util.Date;
  * @create 2024/4/9 上午11:22
  **/
 @Data
-public class SersorData {
+public class LightIntensityData {
     private int id;
     private float lightIntensity;
-    private float airTemperature;
     private Timestamp readingTime;
 }

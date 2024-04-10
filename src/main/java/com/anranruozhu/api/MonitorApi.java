@@ -60,8 +60,18 @@ public class MonitorApi {
         return null;
     }
     //获取全部的温度信息
-    @GetMapping("/temperature-light-all")
-    public Result getTemperatureAll(){
-        return monitorService.getAllTLData();
+    @GetMapping("/temperature-all")
+    public Result getAllTemperature(){
+        return monitorService.getAllTemperature();
+    }
+    //获取所有的光照信息
+    @GetMapping("/light-intensity-all")
+    public Result getAllLightIntensity(){
+        return monitorService.getAllLightIntensity();
+    }
+    //获取所有的湿度信息
+    @GetMapping("/humidity-all")
+    public Result getAllHumidity(){
+        return monitorService.getAllHumidity();
     }
 }

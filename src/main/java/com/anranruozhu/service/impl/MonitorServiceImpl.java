@@ -2,7 +2,8 @@ package com.anranruozhu.service.impl;
 
 import cn.hutool.json.JSONObject;
 import com.anranruozhu.common.Result;
-import com.anranruozhu.entity.SersorData;
+import com.anranruozhu.entity.LightIntensityData;
+import com.anranruozhu.entity.TemperatureData;
 import com.anranruozhu.entity.soilData;
 import com.anranruozhu.mapper.SersorDataMapper;
 import com.anranruozhu.mapper.soilDataMapper;
@@ -27,10 +28,7 @@ public class MonitorServiceImpl implements MonitorService {
     @Autowired
     private SersorDataMapper sersorDataMapper;
 
-    @Override
-    public List<soilData> getHumidity() {
-        return soildataMapper.ShowAll();
-    }
+
     @Override
     public Result getNewHumidity() {
         Result rs=new Result();
@@ -80,12 +78,11 @@ public class MonitorServiceImpl implements MonitorService {
         }
         return rs;
     }
-
     @Override
-    public Result getAllTLData() {
+    public Result getAllTemperature() {
         Result rs=new Result();
         try {
-            List<SersorData> data=sersorDataMapper.ShowAllData();
+            List<TemperatureData> data=sersorDataMapper.ShowAllTemperature();
             rs.setCode(200);
             rs.setMsg("获取成功");
             rs.setData(data);
@@ -99,4 +96,39 @@ public class MonitorServiceImpl implements MonitorService {
         return rs;
     }
 
+    @Override
+    public Result getAllLightIntensity() {
+        Result rs=new Result();
+        try {
+            List<LightIntensityData> data=sersorDataMapper.ShowAlllightIntensity();
+            rs.setCode(200);
+            rs.setMsg("获取成功");
+            rs.setData(data);
+        }catch (Exception e){
+            log.error("{}查询失败", e.getMessage());
+            rs.setCode(500);
+            rs.setMsg("查询失败");
+            return rs;
+        }
+        rs.setCode(200);
+        return rs;
+    }
+
+    @Override
+    public Result getAllHumidity() {
+        Result rs = new Result();
+        try {
+            List<soilData> data = soildataMapper.ShowAllHumidity();
+            rs.setCode(200);
+            rs.setMsg("获取成功");
+            rs.setData(data);
+        } catch (Exception e) {
+            log.error("{}查询失败", e.getMessage());
+            rs.setCode(500);
+            rs.setMsg("查询失败");
+            return rs;
+        }
+        rs.setCode(200);
+        return rs;
+    }
 }

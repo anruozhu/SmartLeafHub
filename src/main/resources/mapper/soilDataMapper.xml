@@ -7,15 +7,14 @@
         INSERT INTO smartleafhub.soil_data(soil_humidity)
         VALUES(#{soilHumidity})
     </insert>
-
-    <select id="ShowAll" resultType="com.anranruozhu.entity.soilData">
-        SELECT id,soil_humidity,reading_time
-        FROM smartleafhub.soil_data
-    </select>
-
     <select id="ShowLast" resultType="float">
         SELECT soil_humidity
         FROM smartleafhub.soil_data
         ORDER BY reading_time DESC LIMIT 1;
+    </select>
+
+    <select id="ShowAllHumidity" resultType="com.anranruozhu.entity.soilData">
+        SELECT id,soil_humidity,reading_time
+        FROM smartleafhub.soil_data
     </select>
 </mapper>

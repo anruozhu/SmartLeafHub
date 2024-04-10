@@ -21,8 +21,15 @@
         LIMIT 1
     </select>
 
-    <select id="ShowAllData" resultType="com.anranruozhu.entity.SersorData">
-    SELECT *
+
+
+    <select id="ShowAllTemperature" resultType="com.anranruozhu.entity.TemperatureData">
+        SELECT id,air_temperature,reading_time
         from smartleafhub.sensor_data;
-     </select>
+    </select>
+
+    <select id="ShowAlllightIntensity" resultType="com.anranruozhu.entity.LightIntensityData">
+        SELECT id,light_intensity,reading_time
+        from smartleafhub.sensor_data;
+    </select>
 </mapper>
