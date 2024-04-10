@@ -2,14 +2,19 @@ package com.anranruozhu.api;
 
 import com.anranruozhu.common.Result;
 import com.anranruozhu.entity.UserInfo;
+import com.anranruozhu.entity.Weather;
 import com.anranruozhu.service.LoginService;
 import com.anranruozhu.service.UserInfoService;
+import com.anranruozhu.service.WeatherService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * @author anranruozhu
@@ -26,6 +31,8 @@ public class UserManagementController {
     @Autowired
     private LoginService loginService;
     @Autowired
+    private WeatherService weatherService;
+    @Autowired
     private RedisTemplate<String, String> redisTemplate;
     @PostMapping("/SetUserInfo")
     public Result SetUserInfo(@RequestBody UserInfo userInfo, HttpServletRequest request){
@@ -39,7 +46,16 @@ public class UserManagementController {
         int id= (int) request.getAttribute("id");
         return userInfoService.getUserInfo(id);
     }
-
+    @GetMapping("/weather")
+    public Result  getWeather(@RequestParam String cityCode) throws IOException {
+        Result rs=new Result();
+        //获取天气数据
+        List<Weather> weathers = weatherService.getWeather(cityCode);
+        rs.setCode(200);
+        rs.setMsg("查询成功");
+        rs.setData(weathers);
+        return rs;
+    }
     @PostMapping("/UpdatePassword")
     public Result UpdatePassword(@RequestParam String code, @RequestParam String phoneNumber , @RequestParam String NewPassword, HttpServletRequest request){
         // 处理注册逻辑
