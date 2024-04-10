@@ -24,6 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/secure")
 @Slf4j
+@CrossOrigin
 public class MonitorApi {
     @Autowired
     private MonitorService monitorService;
