@@ -16,9 +16,10 @@ import org.springframework.web.bind.annotation.*;
  * @Description 身份验证接口
  * @create 2024/4/7 11:12
  **/
-@CrossOrigin
+
 @Slf4j
 @RestController
+@CrossOrigin(origins = "*")
 public class AuthController {
     @Autowired
     private LoginService loginService;
