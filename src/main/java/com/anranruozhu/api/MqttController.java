@@ -5,9 +5,10 @@ import com.anranruozhu.service.mqtt.sendclient.MqttSendClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin
+
 @RestController
 @RequestMapping("/secure")
+@CrossOrigin(origins = "*")
 public class MqttController {
     @Autowired
     private MqttSendClient client1;

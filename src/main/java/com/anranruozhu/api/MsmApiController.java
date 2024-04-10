@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
  * @create 2024/4/8 上午10:10
  **/
 
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/msm")
 public class MsmApiController {
