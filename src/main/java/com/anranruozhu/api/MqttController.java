@@ -31,14 +31,19 @@ public class MqttController {
         json.putOnce("instruction", data);
         return json;
     }
-    @GetMapping("/watetctl/{ctl}")
-    private Object watetctl(@PathVariable String ctl) {
+    @GetMapping("/lightctl")
+    private Object lightctl(@RequestParam String light_mode,
+                            @RequestParam String light_level
+    ) {
         client1.connect();
         String topic = "ctl-b-1";
-        client1.publish(topic, ctl);
+        JSONObject data = new JSONObject()
+                .set("light_mode", light_mode)
+                .set("light_level", light_level);
+        client1.publish(topic, String.valueOf(data));
         JSONObject json = new JSONObject();
         json.putOnce("topic", topic);
-        json.putOnce("status", ctl);
+        json.putOnce("instruction", data);
         return json;
     }
 }
