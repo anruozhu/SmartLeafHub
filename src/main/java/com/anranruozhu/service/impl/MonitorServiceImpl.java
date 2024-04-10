@@ -10,6 +10,7 @@ import com.anranruozhu.mapper.SoilDataMapper;
 import com.anranruozhu.mapper.TemperstureDataMapper;
 import com.anranruozhu.service.MonitorService;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -132,6 +133,77 @@ public class MonitorServiceImpl implements MonitorService {
             return rs;
         }
         rs.setCode(200);
+        return rs;
+    }
+
+    @Override
+    public Result getMathTemperature() {
+        List<TemperatureData> datas=temperstureDataMapper.ShowAll();
+        Result rs=new Result();
+        int n=datas.size();
+        float total=0;
+        float max=0;
+        float min=1000;
+        for(TemperatureData data:datas){
+            total+=data.getAirTemperature();
+            if(data.getAirTemperature()>max){
+                max=data.getAirTemperature();
+            }
+            if(data.getAirTemperature()<min){
+                min=data.getAirTemperature();
+            }
+        }
+        return getResult(rs, n, total, max, min);
+    }
+
+
+    @Override
+    public Result getMathHumidity() {
+        List<soilData> datas=soilDataMapper.ShowAll();
+        Result rs=new Result();
+        int n=datas.size();
+        float total=0;
+        float max=0;
+        float min=1000;
+        for(soilData data:datas){
+            total+=data.getSoilHumidity();
+            if(data.getSoilHumidity()>max){
+                max=data.getSoilHumidity();
+            }
+            if(data.getSoilHumidity()<min){
+                min=data.getSoilHumidity();
+            }
+        }
+        return getResult(rs, n, total, max, min);
+    }
+
+    @Override
+    public Result getMathLightIntensity() {
+        List<LightIntensityData> datas=lightDataMapper.ShowAll();
+        Result rs=new Result();
+        int n=datas.size();
+        float total=0;
+        float max=0;
+        float min=1000;
+        for(LightIntensityData data:datas){
+            total+=data.getLightIntensity();
+            if(data.getLightIntensity()>max){
+                max=data.getLightIntensity();
+            }
+            if(data.getLightIntensity()<min){
+                min=data.getLightIntensity();
+            }
+        }
+        return getResult(rs, n, total, max, min);
+    }
+
+    @NotNull
+    private Result getResult(Result rs, int n, float total, float max, float min) {
+        float avg=total/n;
+        JSONObject data=new JSONObject().set("max",max).set("min",min).set("avg",avg);
+        rs.setCode(200);
+        rs.setData(data);
+        rs.setMsg("获取成功");
         return rs;
     }
 }

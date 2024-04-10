@@ -15,5 +15,6 @@
     <select id="ShowAll" resultType="com.anranruozhu.entity.TemperatureData">
         SELECT id,air_temperature,reading_time
         FROM smartleafhub.temperature_data
+        ORDER BY reading_time DESC LIMIT 200
     </select>
 </mapper>

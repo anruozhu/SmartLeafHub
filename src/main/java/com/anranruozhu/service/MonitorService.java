@@ -30,4 +30,16 @@ public interface MonitorService {
      * 获取已记录的所有土壤湿度信息
      */
     Result getAllHumidity();
+    /**
+     * 获取已记录温度信息的最大值，最小值，平均值
+     */
+    Result getMathTemperature();
+    /**
+     * 获取已记录土壤湿度信息的最大值，最小值，平均值
+     */
+    Result getMathHumidity();
+    /**
+     * 获取已记录光照信息的最大值，最小值，平均值
+     */
+    Result getMathLightIntensity();
 }
