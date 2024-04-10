@@ -24,5 +24,8 @@ public interface MonitorService {
      * 获取最新的光照数据
      */
     Result getNewLightIntensity();
-
+    /**
+     * 获取已记录的所有温度信息
+     */
+    Result getAllTLData();
 }

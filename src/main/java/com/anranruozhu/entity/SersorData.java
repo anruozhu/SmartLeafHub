@@ -2,6 +2,7 @@ package com.anranruozhu.entity;
 
 import lombok.Data;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -13,6 +14,7 @@ import java.util.Date;
 @Data
 public class SersorData {
     private int id;
-    private float lightINtensity;
+    private float lightIntensity;
     private float airTemperature;
+    private Timestamp readingTime;
 }

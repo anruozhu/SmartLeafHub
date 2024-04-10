@@ -2,6 +2,7 @@ package com.anranruozhu.service.impl;
 
 import cn.hutool.json.JSONObject;
 import com.anranruozhu.common.Result;
+import com.anranruozhu.entity.SersorData;
 import com.anranruozhu.entity.soilData;
 import com.anranruozhu.mapper.SersorDataMapper;
 import com.anranruozhu.mapper.soilDataMapper;
@@ -79,4 +80,23 @@ public class MonitorServiceImpl implements MonitorService {
         }
         return rs;
     }
+
+    @Override
+    public Result getAllTLData() {
+        Result rs=new Result();
+        try {
+            List<SersorData> data=sersorDataMapper.ShowAllData();
+            rs.setCode(200);
+            rs.setMsg("获取成功");
+            rs.setData(data);
+        }catch (Exception e){
+            log.error("{}查询失败", e.getMessage());
+            rs.setCode(500);
+            rs.setMsg("查询失败");
+            return rs;
+        }
+        rs.setCode(200);
+        return rs;
+    }
+
 }

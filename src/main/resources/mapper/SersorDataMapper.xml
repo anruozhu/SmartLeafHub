@@ -20,4 +20,9 @@
         ORDER BY reading_time DESC
         LIMIT 1
     </select>
+
+    <select id="ShowAllData" resultType="com.anranruozhu.entity.SersorData">
+    SELECT *
+        from smartleafhub.sensor_data;
+     </select>
 </mapper>

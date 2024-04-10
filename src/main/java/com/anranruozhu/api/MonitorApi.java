@@ -58,4 +58,9 @@ public class MonitorApi {
     public String getLEDStatus(){
         return null;
     }
+    //获取全部的温度信息
+    @GetMapping("/temperature-light-all")
+    public Result getTemperatureAll(){
+        return monitorService.getAllTLData();
+    }
 }
