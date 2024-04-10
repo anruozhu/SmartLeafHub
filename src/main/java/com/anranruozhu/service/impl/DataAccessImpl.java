@@ -2,6 +2,9 @@ package com.anranruozhu.service.impl;
 
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.anranruozhu.common.Result;
+import com.anranruozhu.entity.DeviceState;
+import com.anranruozhu.entity.LightInstrustions;
 import com.anranruozhu.mapper.*;
 import com.anranruozhu.service.DataAccess;
 import lombok.extern.slf4j.Slf4j;
@@ -80,5 +83,46 @@ public class DataAccessImpl implements DataAccess {
             throw new RuntimeException("lightInstruction 保存失败");
         }
         log.info("lightInstruction 保存成功");
+    }
+
+    @Override
+    public DeviceState getDeviceState() {
+        DeviceState res = new DeviceState();
+        try {
+            res = deviceStateMapper.ShowLast();
+        }catch (Exception e){
+            log.error("error: " + e.getMessage());
+            throw new RuntimeException("获取设备状态失败");
+        }
+        return res;
+    }
+
+    @Override
+    public LightInstrustions getLightState() {
+        LightInstrustions res = new LightInstrustions();
+        try {
+            res = lightInstrustionsMapper.ShowLast();
+        } catch (Exception e){
+            log.error("error: " + e.getMessage());
+            throw new RuntimeException("获取灯光状态失败");
+        }
+        return res;
+    }
+
+    public Result getDeviceAndLightState() {
+        Result res = new Result();
+        DeviceState device = getDeviceState();
+        LightInstrustions light = getLightState();
+        JSONObject data = new JSONObject();
+        data.set("pumpCtrlState", device.getPumpCtrlState())
+                .set("pumpPowerState", device.getPumpPowerState())
+                .set("fanMode", device.getFanMode())
+                .set("fanLevel", device.getFanLevel())
+                .set("lightMode", light.getLightMode())
+                .set("light_level", light.getLight_level());
+        res.setData(data);
+        res.setCode(200);
+        res.setMsg("获取成功");
+        return res;
     }
 }

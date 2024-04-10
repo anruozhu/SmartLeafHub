@@ -1,5 +1,9 @@
 package com.anranruozhu.service;
 
+import com.anranruozhu.common.Result;
+import com.anranruozhu.entity.DeviceState;
+import com.anranruozhu.entity.LightInstrustions;
+
 public interface DataAccess {
     void SaveSersor(String message);
     void SaveSoil(String message);
@@ -8,4 +12,7 @@ public interface DataAccess {
                          int fanMode,
                          int fanLevel);
     void SaveInstructions(int lightMode, int lightLevel);
+    DeviceState getDeviceState();
+    LightInstrustions getLightState();
+    Result getDeviceAndLightState();
 }

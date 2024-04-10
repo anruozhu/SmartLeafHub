@@ -1,6 +1,7 @@
 package com.anranruozhu.api;
 
 import cn.hutool.json.JSONObject;
+import com.anranruozhu.common.Result;
 import com.anranruozhu.service.DataAccess;
 import com.anranruozhu.service.mqtt.sendclient.MqttSendClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ public class MqttController {
     @Autowired
     private DataAccess dataAccess;
     @GetMapping("/WindAndPumpctl")
-    private Object windctl(@RequestParam int p_c_state,
+    public Object windctl(@RequestParam int p_c_state,
                            @RequestParam int p_p_state,
                            @RequestParam int f_mode,
                            @RequestParam int f_level
@@ -37,7 +38,7 @@ public class MqttController {
         return json;
     }
     @GetMapping("/lightctl")
-    private Object lightctl(@RequestParam int light_mode,
+    public Object lightctl(@RequestParam int light_mode,
                             @RequestParam int light_level
     ) {
         client1.connect();
@@ -51,5 +52,10 @@ public class MqttController {
         json.putOnce("topic", topic);
         json.putOnce("instruction", data);
         return json;
+    }
+
+    @GetMapping("/get_device_state")
+    public Result getDeviceState(){
+        return dataAccess.getDeviceAndLightState();
     }
 }
