@@ -1,6 +1,7 @@
 package com.anranruozhu.api;
 
 import cn.hutool.json.JSONObject;
+import com.anranruozhu.service.DataAccess;
 import com.anranruozhu.service.mqtt.sendclient.MqttSendClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,11 +13,13 @@ import org.springframework.web.bind.annotation.*;
 public class MqttController {
     @Autowired
     private MqttSendClient client1;
+    @Autowired
+    private DataAccess dataAccess;
     @GetMapping("/WindAndPumpctl")
-    private Object windctl(@RequestParam String p_c_state,
-                           @RequestParam String p_p_state,
-                           @RequestParam String f_mode,
-                           @RequestParam String f_level
+    private Object windctl(@RequestParam int p_c_state,
+                           @RequestParam int p_p_state,
+                           @RequestParam int f_mode,
+                           @RequestParam int f_level
                               )  {
         client1.connect();
         String topic = "ctl-a-1";
@@ -25,6 +28,7 @@ public class MqttController {
                                         .set("fan_mode",f_mode)
                                         .set("fan_level",f_level);
         client1.publish(topic, String.valueOf(data));
+        dataAccess.SaveDeviceState(p_c_state, p_p_state, f_mode, f_level);
         client1.disconnect();
         client1.close();
         JSONObject json = new JSONObject();
@@ -33,8 +37,8 @@ public class MqttController {
         return json;
     }
     @GetMapping("/lightctl")
-    private Object lightctl(@RequestParam String light_mode,
-                            @RequestParam String light_level
+    private Object lightctl(@RequestParam int light_mode,
+                            @RequestParam int light_level
     ) {
         client1.connect();
         String topic = "ctl-b-1";
@@ -42,6 +46,7 @@ public class MqttController {
                 .set("light_mode", light_mode)
                 .set("light_level", light_level);
         client1.publish(topic, String.valueOf(data));
+        dataAccess.SaveInstructions(light_mode,light_level);
         JSONObject json = new JSONObject();
         json.putOnce("topic", topic);
         json.putOnce("instruction", data);

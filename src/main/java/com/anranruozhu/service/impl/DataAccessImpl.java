@@ -2,10 +2,7 @@ package com.anranruozhu.service.impl;
 
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import com.anranruozhu.mapper.LightDataMapper;
-import com.anranruozhu.mapper.SersorDataMapper;
-import com.anranruozhu.mapper.SoilDataMapper;
-import com.anranruozhu.mapper.TemperstureDataMapper;
+import com.anranruozhu.mapper.*;
 import com.anranruozhu.service.DataAccess;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +25,11 @@ public class DataAccessImpl implements DataAccess {
     private TemperstureDataMapper temperstureDataMapper;
     @Autowired
     private LightDataMapper lightDataMapper;
+
+    @Autowired
+    private DeviceStateMapper deviceStateMapper;
+    @Autowired
+    private LightInstrustionsMapper lightInstrustionsMapper;
     @Override
     public void SaveSersor(String message) {
         //数据
@@ -56,5 +58,27 @@ public class DataAccessImpl implements DataAccess {
             throw new RuntimeException("土光照强度保存失败");
         }
         log.info("光照强度为：{}", lightIntensity);
+    }
+
+    @Override
+    public void SaveDeviceState(int pumpCtrlState, int pumpPowerState, int fanMode, int fanLevel) {
+        try {
+            deviceStateMapper.addData(pumpCtrlState, pumpPowerState,fanMode,fanLevel);
+        }catch (Exception e){
+            log.error("error: " + e.getMessage());
+            throw new RuntimeException("devicedata 保存失败");
+        }
+        log.info("devicedata 保存成功");
+    }
+
+    @Override
+    public void SaveInstructions(int lightMode, int lightLevel) {
+        try {
+            lightInstrustionsMapper.addData(lightMode,lightLevel);
+        } catch (Exception e) {
+            log.error("error: " + e.getMessage());
+            throw new RuntimeException("lightInstruction 保存失败");
+        }
+        log.info("lightInstruction 保存成功");
     }
 }
