@@ -40,7 +40,7 @@ public class LoginServiceImpl implements LoginService {
                     .set("token", token)
                     .set("user", new JSONObject()
                             .set("id", user.getId())
-                            .set("phone",user.getPhoneNumber()
+                            .set("phoneNumber",user.getPhoneNumber()
                             ));
             result.setData(json);
             return result;

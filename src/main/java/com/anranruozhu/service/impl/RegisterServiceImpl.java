@@ -27,6 +27,7 @@ public class RegisterServiceImpl implements RegisterService {
 
     @Override
     public Result register(String phone, String password) {
+        Result result=new Result();
         String pwd = MD5.md5(password, phone);
         int id= Integer.parseInt(userMapper.findByPhone(phone));
         try {

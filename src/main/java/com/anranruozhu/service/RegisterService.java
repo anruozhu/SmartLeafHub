@@ -15,7 +15,5 @@ import org.springframework.stereotype.Component;
  **/
 
 public interface RegisterService {
-
-    Result result=new Result();
     Result register(String phone, String password);
 }

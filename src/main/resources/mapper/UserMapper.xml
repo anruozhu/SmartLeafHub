@@ -5,17 +5,17 @@
 
     <select id="login" resultType="com.anranruozhu.entity.User">
         SELECT * from smartleafhub.users
-        WHERE phone_number=#{phone} AND password=#{password}
+        WHERE phone_number=#{phoneNumber} AND password=#{password}
     </select>
 
     <insert id="register">
         INSERT INTO smartleafhub.users(phone_number,password)
-        Values (#{phone},#{password})
+        Values (#{phoneNumber},#{password})
     </insert>
 
     <select id="findByPhone" resultType="String">
         SELECT users.id from smartleafhub.users
-        WHERE phone_number=#{phone}
+        WHERE phone_number=#{phoneNumber}
     </select>
 
     <update id="UpdatePassword">
