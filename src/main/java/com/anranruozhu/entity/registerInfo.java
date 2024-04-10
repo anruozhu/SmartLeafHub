@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @ApiModel
 public class registerInfo {
     @ApiModelProperty(value = "用户手机号")
-    String phone;
+    String phoneNumber;
     @ApiModelProperty(value = "用户密码")
     String password;
     @ApiModelProperty(value = "验证码")

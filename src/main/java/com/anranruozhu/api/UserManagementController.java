@@ -35,21 +35,20 @@ public class UserManagementController {
         return userInfoService.UpdateUserInfo(userInfo);
     }
     @PostMapping("/UpdatePassword")
-    public Result UpdatePassword(@RequestParam String code1, @RequestParam String phone , @RequestParam String NewPassword, HttpServletRequest request){
+    public Result UpdatePassword(@RequestParam String code, @RequestParam String phoneNumber , @RequestParam String NewPassword, HttpServletRequest request){
         // 处理注册逻辑
         // 返回注册结果
         //1、从redis中获取验证码，如果获取到就直接返回
-        String code = redisTemplate.opsForValue().get(phone);
+        String code1 = redisTemplate.opsForValue().get(phoneNumber);
         int id= (int) request.getAttribute("id");
-
         log.info(code);
         Result rs=new Result();
         rs.setCode(500);
         rs.setMsg("验证码错误");
-        if(code1.equals(code) && loginService.isIdOk(id,phone)){
+        if(code.equals(code1) && loginService.isIdOk(id,phoneNumber)){
             //验证码验证注册后删除对应值
-            redisTemplate.delete(phone);
-            return loginService.UpdatePassword(phone,NewPassword);
+            redisTemplate.delete(phoneNumber);
+            return loginService.UpdatePassword(phoneNumber,NewPassword);
         }else{
             return rs;
         }

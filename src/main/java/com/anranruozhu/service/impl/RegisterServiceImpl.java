@@ -26,17 +26,17 @@ public class RegisterServiceImpl implements RegisterService {
     private UserInfoMapper userInfoMapper;
 
     @Override
-    public Result register(String phone, String password) {
+    public Result register(String phoneNumber, String password) {
         Result result=new Result();
-        String pwd = MD5.md5(password, phone);
-        int id= Integer.parseInt(userMapper.findByPhone(phone));
+        String pwd = MD5.md5(password, phoneNumber);
         try {
-            userMapper.register(phone,pwd);
+            userMapper.register(phoneNumber,pwd);
         }catch(Exception e){
             log.error(e.getMessage());
             throw new RuntimeException("用户注册失败");
         }
         try {
+            int id= Integer.parseInt(userMapper.findByPhone(phoneNumber));
             userInfoMapper.InsertID(id);
         }catch(Exception e){
             log.error(e.getMessage());

@@ -3,7 +3,6 @@ package com.anranruozhu.api;
 import com.anranruozhu.common.Result;
 import com.anranruozhu.entity.User;
 import com.anranruozhu.entity.registerInfo;
-import com.anranruozhu.mapper.UserInfoMapper;
 import com.anranruozhu.service.LoginService;
 import com.anranruozhu.service.RegisterService;
 import lombok.extern.slf4j.Slf4j;
@@ -39,16 +38,16 @@ public class AuthController {
         // 返回注册结果
         //1、从redis中获取验证码，如果获取到就直接返回
         log.info("登陆信息"+ ri);
-        String code = redisTemplate.opsForValue().get(ri.getPhone());
+        String code = redisTemplate.opsForValue().get(ri.getPhoneNumber());
         log.info(code);
         Result rs=new Result();
         rs.setCode(500);
         rs.setMsg("验证码错误");
         if(ri.getCode().equals(code)){
             //验证码验证注册后删除对应值
-            redisTemplate.delete(ri.getPhone());
+            redisTemplate.delete(ri.getPhoneNumber());
 
-            return registerService.register(ri.getPhone(),ri.getPassword());
+            return registerService.register(ri.getPhoneNumber(),ri.getPassword());
         }else{
             return rs;
         }

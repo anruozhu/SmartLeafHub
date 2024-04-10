@@ -38,7 +38,6 @@ public class MsmApiController {
     @GetMapping(value = "/RegisterSend")
     public Result code(@RequestParam String phoneNumber) {
         Result rs=new Result();
-
         //首先先验证手机号是否注册过。
         if(userMapper.findByPhone(phoneNumber)==null){
             rs.setCode(200);

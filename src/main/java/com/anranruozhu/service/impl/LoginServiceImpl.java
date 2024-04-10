@@ -61,9 +61,14 @@ public class LoginServiceImpl implements LoginService {
         Result res = new Result();
         String encodedPwd = MD5.md5(password,phone);
         try {
+           // String id=userMapper.findByPhone(phone);
             userMapper.UpdatePassword(phone,encodedPwd);
         }catch (Exception e){
             log.error(e.getMessage());
+            res.setCode(500);
+            res.setMsg("密码更新失败");
+            res.setData(phone);
+            return res;
         }
         res.setCode(200);
         res.setMsg("密码更新成功");

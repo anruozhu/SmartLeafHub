@@ -14,7 +14,6 @@ public class MqttController {
     private Object windctl(@RequestParam String mode,@RequestParam String level) {
         client1.connect();
         String topic = "topicC";
-
         JSONObject data=new JSONObject().set("light_mode",mode)
                                         .set("light_level",level);
         client1.publish(topic, String.valueOf(data));

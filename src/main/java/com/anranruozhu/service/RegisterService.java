@@ -1,11 +1,6 @@
 package com.anranruozhu.service;
 
 import com.anranruozhu.common.Result;
-import com.anranruozhu.mapper.UserMapper;
-import com.anranruozhu.utils.MD5;
-import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 /**
  * @author anranruozhu
@@ -15,5 +10,5 @@ import org.springframework.stereotype.Component;
  **/
 
 public interface RegisterService {
-    Result register(String phone, String password);
+    Result register(String phoneNumber, String password);
 }
