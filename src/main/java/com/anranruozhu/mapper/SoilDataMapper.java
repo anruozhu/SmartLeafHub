@@ -7,11 +7,11 @@ import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 
 @Mapper
-public interface soilDataMapper {
-
-        // 添加土壤数据
+public interface SoilDataMapper {
+        // 添加数据
         void addData(Float soilHumidity);
+        //获取最新得到数据
         Float ShowLast();
-
-        List<soilData> ShowAllHumidity();
+        //获取历史数据
+        List<soilData> ShowAll();
 }

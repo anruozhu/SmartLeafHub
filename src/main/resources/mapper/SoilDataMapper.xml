@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.anranruozhu.mapper.soilDataMapper">
+<mapper namespace="com.anranruozhu.mapper.SoilDataMapper">
 
     <insert id="addData">
         INSERT INTO smartleafhub.soil_data(soil_humidity)
@@ -13,7 +13,7 @@
         ORDER BY reading_time DESC LIMIT 1;
     </select>
 
-    <select id="ShowAllHumidity" resultType="com.anranruozhu.entity.soilData">
+    <select id="ShowAll" resultType="com.anranruozhu.entity.soilData">
         SELECT id,soil_humidity,reading_time
         FROM smartleafhub.soil_data
     </select>

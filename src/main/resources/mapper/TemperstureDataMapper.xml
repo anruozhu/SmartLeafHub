@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.anranruozhu.mapper.TemperstureDataMapper">
+
+    <select id="addData">
+        INSERT INTO smartleafhub.temperature_data(air_temperature)
+        VALUES(#{tempersture})
+    </select>
+    <select id="ShowLast" resultType="java.lang.Float">
+        SELECT air_temperature
+        FROM smartleafhub.temperature_data
+        ORDER BY reading_time DESC LIMIT 1;
+    </select>
+    <select id="ShowAll" resultType="com.anranruozhu.entity.TemperatureData">
+        SELECT id,air_temperature,reading_time
+        FROM smartleafhub.temperature_data
+    </select>
+</mapper>

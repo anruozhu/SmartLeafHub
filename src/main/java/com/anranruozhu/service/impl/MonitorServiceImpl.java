@@ -5,8 +5,9 @@ import com.anranruozhu.common.Result;
 import com.anranruozhu.entity.LightIntensityData;
 import com.anranruozhu.entity.TemperatureData;
 import com.anranruozhu.entity.soilData;
-import com.anranruozhu.mapper.SersorDataMapper;
-import com.anranruozhu.mapper.soilDataMapper;
+import com.anranruozhu.mapper.LightDataMapper;
+import com.anranruozhu.mapper.SoilDataMapper;
+import com.anranruozhu.mapper.TemperstureDataMapper;
 import com.anranruozhu.service.MonitorService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,16 +25,18 @@ import java.util.List;
 @Component
 public class MonitorServiceImpl implements MonitorService {
     @Autowired
-    private soilDataMapper soildataMapper;
+    private LightDataMapper lightDataMapper;
     @Autowired
-    private SersorDataMapper sersorDataMapper;
+    private TemperstureDataMapper temperstureDataMapper;
+    @Autowired
+    private SoilDataMapper soilDataMapper;
 
 
     @Override
     public Result getNewHumidity() {
         Result rs=new Result();
         try {
-           float Humidity = soildataMapper.ShowLast();
+           float Humidity = soilDataMapper.ShowLast();
            rs.setCode(200);
             JSONObject data=new JSONObject().set("humidity",Humidity);
            rs.setData(data);
@@ -50,7 +53,7 @@ public class MonitorServiceImpl implements MonitorService {
     public Result getNewTemperature() {
         Result rs=new Result();
         try {
-            float Temperature = sersorDataMapper.ShowLastTemperature();
+            float Temperature = temperstureDataMapper.ShowLast();
             rs.setCode(200);
             JSONObject data=new JSONObject().set("temperature",Temperature);
             rs.setData(data);
@@ -66,7 +69,7 @@ public class MonitorServiceImpl implements MonitorService {
     public Result getNewLightIntensity() {
         Result rs=new Result();
         try {
-            float LightIntensity = sersorDataMapper.ShowLastlightIntensity();
+            float LightIntensity = lightDataMapper.ShowLast();
             rs.setCode(200);
             JSONObject data=new JSONObject().set("lightIntensity",LightIntensity);
             rs.setData(data);
@@ -82,7 +85,7 @@ public class MonitorServiceImpl implements MonitorService {
     public Result getAllTemperature() {
         Result rs=new Result();
         try {
-            List<TemperatureData> data=sersorDataMapper.ShowAllTemperature();
+            List<TemperatureData> data=temperstureDataMapper.ShowAll();
             rs.setCode(200);
             rs.setMsg("获取成功");
             rs.setData(data);
@@ -100,7 +103,7 @@ public class MonitorServiceImpl implements MonitorService {
     public Result getAllLightIntensity() {
         Result rs=new Result();
         try {
-            List<LightIntensityData> data=sersorDataMapper.ShowAlllightIntensity();
+            List<LightIntensityData> data=lightDataMapper.ShowAll();
             rs.setCode(200);
             rs.setMsg("获取成功");
             rs.setData(data);
@@ -118,7 +121,7 @@ public class MonitorServiceImpl implements MonitorService {
     public Result getAllHumidity() {
         Result rs = new Result();
         try {
-            List<soilData> data = soildataMapper.ShowAllHumidity();
+            List<soilData> data = soilDataMapper.ShowAll();
             rs.setCode(200);
             rs.setMsg("获取成功");
             rs.setData(data);

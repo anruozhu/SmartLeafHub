@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.anranruozhu.mapper.LightDataMapper">
+    <select id="addData">
+        INSERT INTO smartleafhub.light_data(light_intensity)
+        VALUES(#{lightIntensity})
+    </select>
+    <select id="ShowLast" resultType="java.lang.Float">
+        SELECT light_intensity
+        FROM smartleafhub.light_data
+        ORDER BY reading_time DESC LIMIT 1;
+    </select>
+    <select id="ShowAll" resultType="com.anranruozhu.entity.LightIntensityData">
+        SELECT id,light_intensity,reading_time
+        FROM smartleafhub.light_data
+    </select>
+</mapper>
