@@ -2,6 +2,8 @@ package com.anranruozhu.entity;
 
 import lombok.Data;
 
+import java.sql.Timestamp;
+
 /**
  * @author anranruozhu
  * @ClassName soilData
@@ -12,4 +14,5 @@ import lombok.Data;
 public class soilData {
     private int id;
     private float soilHumidity;
+    private Timestamp readingTime;
 }

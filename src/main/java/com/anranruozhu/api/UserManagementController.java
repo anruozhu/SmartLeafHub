@@ -34,6 +34,12 @@ public class UserManagementController {
         userInfo.setId(id);
         return userInfoService.UpdateUserInfo(userInfo);
     }
+    @GetMapping("/GetUserInfo")
+    public Result GetUserInfo(HttpServletRequest request){
+        int id= (int) request.getAttribute("id");
+        return userInfoService.getUserInfo(id);
+    }
+
     @PostMapping("/UpdatePassword")
     public Result UpdatePassword(@RequestParam String code, @RequestParam String phoneNumber , @RequestParam String NewPassword, HttpServletRequest request){
         // 处理注册逻辑

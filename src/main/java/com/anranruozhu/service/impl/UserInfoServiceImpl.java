@@ -41,11 +41,21 @@ public class UserInfoServiceImpl implements UserInfoService {
         res.setData(userInfo);
         return res;
     }
-
     @Override
-    public Result FindByID(int id) {
-        userInfoMapper.FindByID(id);
-        return null;
+    public Result getUserInfo(int id) {
+        Result rs=new Result();
+        try{
+          UserInfo userInfo=userInfoMapper.FindByID(id);
+            rs.setCode(200);
+            rs.setMsg("查询成功");
+            rs.setData(userInfo);
+            return rs;
+        }catch (Exception e){
+            log.error(e.getMessage());
+            rs.setCode(500);
+            rs.setMsg("查询失败");
+            return rs;
+        }
     }
 
 }

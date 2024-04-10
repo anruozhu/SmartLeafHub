@@ -10,12 +10,18 @@ import org.springframework.web.bind.annotation.*;
 public class MqttController {
     @Autowired
     private MqttSendClient client1;
-    @GetMapping("/windctl")
-    private Object windctl(@RequestParam String mode,@RequestParam String level) {
+    @GetMapping("/WindAndPumpctl")
+    private Object windctl(@RequestParam String p_c_state,
+                           @RequestParam String p_p_state,
+                           @RequestParam String f_mode,
+                           @RequestParam String f_level
+                              )  {
         client1.connect();
-        String topic = "topicC";
-        JSONObject data=new JSONObject().set("light_mode",mode)
-                                        .set("light_level",level);
+        String topic = "ctl-a-1";
+        JSONObject data=new JSONObject().set("pump_ctrl_state",p_c_state)
+                                        .set("pump_power_state",p_p_state)
+                                        .set("fan_mode",f_mode)
+                                        .set("fan_level",f_level);
         client1.publish(topic, String.valueOf(data));
         client1.disconnect();
         client1.close();
@@ -27,7 +33,7 @@ public class MqttController {
     @GetMapping("/watetctl/{ctl}")
     private Object watetctl(@PathVariable String ctl) {
         client1.connect();
-        String topic = "topicD";
+        String topic = "ctl-b-1";
         client1.publish(topic, ctl);
         JSONObject json = new JSONObject();
         json.putOnce("topic", topic);

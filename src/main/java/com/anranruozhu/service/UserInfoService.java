@@ -6,5 +6,5 @@ import com.anranruozhu.entity.UserInfo;
 public interface UserInfoService {
     Result UpdateUserInfo(UserInfo userInfo);
 
-    Result FindByID(int id);
+    Result getUserInfo(int id);
 }
