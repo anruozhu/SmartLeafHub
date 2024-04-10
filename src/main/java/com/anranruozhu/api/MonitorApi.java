@@ -74,4 +74,17 @@ public class MonitorApi {
     public Result getAllHumidity(){
         return monitorService.getAllHumidity();
     }
+    //获取最近200条数据的计数结果
+    @GetMapping("/temperature-math")
+    public Result getTemperatureMath(){
+        return monitorService.getMathTemperature();
+    }
+    @GetMapping("/light-intensity-math")
+    public Result getLightIntensityMath(){
+        return monitorService.getMathLightIntensity();
+    }
+    @GetMapping("/humidity-math")
+    public Result getHumidityMath(){
+        return monitorService.getMathHumidity();
+    }
 }

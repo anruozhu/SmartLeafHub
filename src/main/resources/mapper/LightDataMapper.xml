@@ -14,5 +14,6 @@
     <select id="ShowAll" resultType="com.anranruozhu.entity.LightIntensityData">
         SELECT id,light_intensity,reading_time
         FROM smartleafhub.light_data
+        ORDER BY reading_time DESC LIMIT 200
     </select>
 </mapper>
