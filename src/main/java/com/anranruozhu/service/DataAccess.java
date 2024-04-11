@@ -15,4 +15,7 @@ public interface DataAccess {
     DeviceState getDeviceState();
     LightInstrustions getLightState();
     Result getDeviceAndLightState();
+    Result getLightInstrustions();
+    Result getPumpStatus();
+    Result getFanStatus();
 }

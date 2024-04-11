@@ -113,16 +113,74 @@ public class DataAccessImpl implements DataAccess {
         Result res = new Result();
         DeviceState device = getDeviceState();
         LightInstrustions light = getLightState();
-        JSONObject data = new JSONObject();
-        data.set("pumpCtrlState", device.getPumpCtrlState())
+
+        res.setData(new JSONObject().set("pumpCtrlState", device.getPumpCtrlState())
                 .set("pumpPowerState", device.getPumpPowerState())
                 .set("fanMode", device.getFanMode())
                 .set("fanLevel", device.getFanLevel())
                 .set("lightMode", light.getLightMode())
-                .set("light_level", light.getLight_level());
-        res.setData(data);
+                .set("light_level", light.getLight_level()));
         res.setCode(200);
         res.setMsg("获取成功");
         return res;
+    }
+
+    @Override
+    public Result getLightInstrustions() {
+        Result rs=new Result();
+        try{
+            LightInstrustions res= lightInstrustionsMapper.ShowLast();
+            rs.setCode(200);
+            rs.setData(new JSONObject()
+                    .set("lightMode",res.getLightMode())
+                    .set("light_level",res.getLight_level()));
+            rs.setMsg("查询成功");
+            return rs;
+        }catch (Exception e){
+            rs.setCode(500);
+            rs.setMsg("查询失败");
+            log.error("error: " + e.getMessage());
+        }
+        return rs;
+    }
+
+    @Override
+    public Result getPumpStatus() {
+        Result rs=new Result();
+
+        try{
+            DeviceState ds=deviceStateMapper.ShowLast();
+            rs.setCode(200);
+            rs.setData(new JSONObject()
+                    .set("pumpCtrlState",ds.getPumpCtrlState())
+                    .set("pumpPowerState",ds.getPumpPowerState()));
+            rs.setMsg("查询成功");
+            return rs;
+        }catch (Exception e){
+            rs.setCode(500);
+            rs.setMsg("查询失败");
+            log.error("error: " + e.getMessage());
+        }
+        return rs;
+    }
+
+    @Override
+    public Result getFanStatus() {
+        Result rs=new Result();
+
+        try{
+            DeviceState ds=deviceStateMapper.ShowLast();
+            rs.setCode(200);
+            rs.setData(new JSONObject()
+                    .set("fanMode",ds.getFanMode())
+                    .set("fanLevel",ds.getFanLevel()));
+            rs.setMsg("查询成功");
+            return rs;
+        }catch (Exception e){
+            rs.setCode(500);
+            rs.setMsg("查询失败");
+            log.error("error: " + e.getMessage());
+        }
+        return rs;
     }
 }

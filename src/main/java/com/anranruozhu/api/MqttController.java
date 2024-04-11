@@ -58,4 +58,16 @@ public class MqttController {
     public Result getDeviceState(){
         return dataAccess.getDeviceAndLightState();
     }
+    @GetMapping("/getLightStatus")
+    public Result getLightStatus() {
+        return dataAccess.getLightInstrustions();
+    }
+    @GetMapping("/getPumpStatus")
+    public Result getPumpStatus() {
+        return dataAccess.getPumpStatus();
+    }
+    @GetMapping("/getFanStatus")
+    public Result getFanStatus() {
+        return dataAccess.getFanStatus();
+    }
 }
