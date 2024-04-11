@@ -12,7 +12,6 @@ import java.sql.Timestamp;
  **/
 @Data
 public class TemperatureData {
-    private int id;
     private float airTemperature;
     private Timestamp readingTime;
 }

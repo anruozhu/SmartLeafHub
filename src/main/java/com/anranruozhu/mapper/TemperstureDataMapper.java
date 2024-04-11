@@ -14,4 +14,5 @@ public interface TemperstureDataMapper {
     Float ShowLast();
     //获取历史数据
     List<TemperatureData> ShowAll();
+    List<TemperatureData> ShowWeekData();
 }

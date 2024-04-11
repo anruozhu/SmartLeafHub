@@ -14,4 +14,5 @@ public interface LightDataMapper {
     Float ShowLast();
     //获取历史数据
     List<LightIntensityData> ShowAll();
+    List<LightIntensityData> ShowWeekData();
 }

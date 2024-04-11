@@ -10,4 +10,5 @@ public interface LightInstrustionsMapper {
     void addData(int lightMode, int lightLevel);
     //获取最新得到数据
     LightInstrustions ShowLast();
+
 }

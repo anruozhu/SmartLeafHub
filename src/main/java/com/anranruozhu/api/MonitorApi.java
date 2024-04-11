@@ -87,4 +87,16 @@ public class MonitorApi {
     public Result getHumidityMath(){
         return monitorService.getMathHumidity();
     }
+    @GetMapping("/temperature-week")
+    public Result getTemperatureWeek(){
+        return monitorService.getWeekTemperature();
+    }
+    @GetMapping("/light-intensity-week")
+    public Result getLightIntensityWeek(){
+        return monitorService.getWeekLightIntensity();
+    }
+    @GetMapping("/humidity-week")
+    public Result getHumidityWeek(){
+        return monitorService.getWeekHumidity();
+    }
 }

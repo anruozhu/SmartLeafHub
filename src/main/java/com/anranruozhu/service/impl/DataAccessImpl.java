@@ -42,6 +42,7 @@ public class DataAccessImpl implements DataAccess {
         try {
             soilDataMapper.addData(soilHumidity);
             temperstureDataMapper.addData(airTemperature);
+
         }catch (Exception e){
             log.error("error: " + e.getMessage());
             throw new RuntimeException("光照气温保存失败");

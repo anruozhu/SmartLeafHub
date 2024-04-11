@@ -14,4 +14,5 @@ public interface SoilDataMapper {
         Float ShowLast();
         //获取历史数据
         List<soilData> ShowAll();
+        List<soilData> ShowWeekData();
 }

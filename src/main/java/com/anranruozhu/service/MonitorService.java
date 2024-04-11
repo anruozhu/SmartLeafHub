@@ -42,4 +42,16 @@ public interface MonitorService {
      * 获取已记录光照信息的最大值，最小值，平均值
      */
     Result getMathLightIntensity();
+    /**
+     * 获取一周的光照
+     */
+    Result getWeekLightIntensity();
+    /**
+     * 获取一周的湿度
+     */
+    Result getWeekHumidity();
+    /**
+     * 获取一周的温度
+     */
+    Result getWeekTemperature();
 }

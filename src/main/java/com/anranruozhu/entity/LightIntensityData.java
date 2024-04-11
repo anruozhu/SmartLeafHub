@@ -13,7 +13,6 @@ import java.util.Date;
  **/
 @Data
 public class LightIntensityData {
-    private int id;
     private float lightIntensity;
     private Timestamp readingTime;
 }

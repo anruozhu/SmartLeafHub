@@ -13,8 +13,16 @@
         ORDER BY reading_time DESC LIMIT 1;
     </select>
     <select id="ShowAll" resultType="com.anranruozhu.entity.TemperatureData">
-        SELECT id,air_temperature,reading_time
+        SELECT air_temperature,reading_time
         FROM smartleafhub.temperature_data
         ORDER BY reading_time DESC LIMIT 200
+    </select>
+
+    <select id="ShowWeekData" resultType="com.anranruozhu.entity.TemperatureData">
+        SELECT air_temperature,reading_time
+        FROM temperature_data
+        WHERE reading_time >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) AND reading_time  &lt;CURDATE()
+        GROUP BY DATE(reading_time)
+        ORDER BY DATE(reading_time) DESC;
     </select>
 </mapper>

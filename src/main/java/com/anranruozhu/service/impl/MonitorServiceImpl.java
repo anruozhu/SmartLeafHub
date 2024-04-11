@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -195,6 +196,54 @@ public class MonitorServiceImpl implements MonitorService {
             }
         }
         return getResult(rs, n, total, max, min);
+    }
+
+    @Override
+    public Result getWeekLightIntensity() {
+        Result rs=new Result();
+        List<LightIntensityData> data=new ArrayList<>();
+        try{
+            data=lightDataMapper.ShowWeekData();
+            rs.setCode(200);
+            rs.setMsg("获取成功");
+            rs.setData(data);
+        }catch (Exception e){
+            rs.setCode(500);
+            rs.setMsg("获取失败");
+        }
+        return rs;
+    }
+
+    @Override
+    public Result getWeekHumidity() {
+        Result rs=new Result();
+        List<soilData> data=new ArrayList<>();
+        try{
+            data=soilDataMapper.ShowWeekData();
+            rs.setCode(200);
+            rs.setMsg("获取成功");
+            rs.setData(data);
+        }catch (Exception e){
+            rs.setCode(500);
+            rs.setMsg("获取失败");
+        }
+        return rs;
+    }
+
+    @Override
+    public Result getWeekTemperature() {
+        Result rs=new Result();
+        List<TemperatureData> data;
+        try{
+            data=temperstureDataMapper.ShowWeekData();
+            rs.setCode(200);
+            rs.setMsg("获取成功");
+            rs.setData(data);
+        }catch (Exception e){
+            rs.setCode(500);
+            rs.setMsg("获取失败");
+        }
+        return rs;
     }
 
     @NotNull

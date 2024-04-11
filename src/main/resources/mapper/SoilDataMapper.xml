@@ -12,9 +12,15 @@
         FROM smartleafhub.soil_data
         ORDER BY reading_time DESC LIMIT 1;
     </select>
-
     <select id="ShowAll" resultType="com.anranruozhu.entity.soilData">
-        SELECT id,soil_humidity,reading_time
+        SELECT soil_humidity,reading_time
         FROM smartleafhub.soil_data
+    </select>
+    <select id="ShowWeekData" resultType="com.anranruozhu.entity.soilData">
+        SELECT soil_humidity,reading_time
+        FROM soil_data
+        WHERE reading_time >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) AND reading_time  &lt;CURDATE()
+        GROUP BY DATE(reading_time)
+        ORDER BY DATE(reading_time) DESC;
     </select>
 </mapper>
