@@ -99,4 +99,8 @@ public class MonitorApi {
     public Result getHumidityWeek(){
         return monitorService.getWeekHumidity();
     }
+    @GetMapping("alert-info")
+    public Result getAlertInfo(@RequestParam int alertType){
+        return monitorService.getAlarm(alertType);
+    }
 }

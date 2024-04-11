@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class DataAccessImpl implements DataAccess {
     @Autowired
-    private SersorDataMapper sersorDataMapper;
+    private AlertDataMapper alertDataMapper;
     @Autowired
     private SoilDataMapper soilDataMapper;
     @Autowired
@@ -42,7 +42,8 @@ public class DataAccessImpl implements DataAccess {
         try {
             soilDataMapper.addData(soilHumidity);
             temperstureDataMapper.addData(airTemperature);
-
+            TemperatureIsNormal(airTemperature);
+            soilHumidityIsNormal(soilHumidity);
         }catch (Exception e){
             log.error("error: " + e.getMessage());
             throw new RuntimeException("光照气温保存失败");
@@ -57,9 +58,10 @@ public class DataAccessImpl implements DataAccess {
         float lightIntensity = jsonObject.getFloat("light_intensity");
         try {
             lightDataMapper.addData(lightIntensity);
+            lightIntensityIsNormal(lightIntensity);
         }catch (Exception e){
             log.error("error: " + e.getMessage());
-            throw new RuntimeException("土光照强度保存失败");
+            throw new RuntimeException("光照强度保存失败");
         }
         log.info("光照强度为：{}", lightIntensity);
     }
@@ -183,5 +185,24 @@ public class DataAccessImpl implements DataAccess {
             log.error("error: " + e.getMessage());
         }
         return rs;
+    }
+    public void TemperatureIsNormal(float temperature){
+        if(temperature>30){
+            alertDataMapper.AlertNew(3,"当前温度过高",temperature);
+        }else if(temperature<10){
+            alertDataMapper.AlertNew(3,"当前温度过低",temperature);
+        }
+    }
+    public void soilHumidityIsNormal(float soilHumidity){
+        if(soilHumidity<20||soilHumidity>80) {
+            alertDataMapper.AlertNew(2, "当前土壤湿度异常", soilHumidity);
+        }
+    }
+    public void lightIntensityIsNormal(float lightIntensity){
+        if(lightIntensity<100){
+            alertDataMapper.AlertNew(1,"当前光照强度过低",lightIntensity);
+        }else if(lightIntensity>200){
+            alertDataMapper.AlertNew(1,"当前光照强度过高",lightIntensity);
+        }
     }
 }

@@ -54,4 +54,8 @@ public interface MonitorService {
      * 获取一周的温度
      */
     Result getWeekTemperature();
+    /**
+     * 获取预警信息
+     */
+    Result getAlarm(int alertType);
 }

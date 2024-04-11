@@ -2,9 +2,11 @@ package com.anranruozhu.service.impl;
 
 import cn.hutool.json.JSONObject;
 import com.anranruozhu.common.Result;
+import com.anranruozhu.entity.AlertData;
 import com.anranruozhu.entity.LightIntensityData;
 import com.anranruozhu.entity.TemperatureData;
 import com.anranruozhu.entity.soilData;
+import com.anranruozhu.mapper.AlertDataMapper;
 import com.anranruozhu.mapper.LightDataMapper;
 import com.anranruozhu.mapper.SoilDataMapper;
 import com.anranruozhu.mapper.TemperstureDataMapper;
@@ -32,8 +34,8 @@ public class MonitorServiceImpl implements MonitorService {
     private TemperstureDataMapper temperstureDataMapper;
     @Autowired
     private SoilDataMapper soilDataMapper;
-
-
+    @Autowired
+    private AlertDataMapper alertDataMapper;
     @Override
     public Result getNewHumidity() {
         Result rs=new Result();
@@ -244,6 +246,21 @@ public class MonitorServiceImpl implements MonitorService {
             rs.setMsg("获取失败");
         }
         return rs;
+    }
+
+    @Override
+    public Result getAlarm(int alertType) {
+        Result  result=new Result();
+        try {
+            AlertData data=alertDataMapper.getAlertData(alertType);
+        result.setCode(200);
+        result.setData(data);
+            result.setMsg("获取成功");
+        }catch (Exception e){
+            result.setCode(500);
+            result.setMsg("获取失败");
+        }
+        return result;
     }
 
     @NotNull
