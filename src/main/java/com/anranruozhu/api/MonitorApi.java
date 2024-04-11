@@ -44,21 +44,6 @@ public class MonitorApi {
     public Result getLightIntensity() {
         return monitorService.getNewLightIntensity();
     }
-    //获取实时的风扇状态
-    @GetMapping("/fan-status")
-    public String getFanStatus(){
-        return null;
-    }
-    //获取实时的水泵状态
-    @GetMapping("/water-pump-status")
-    public String getWaterPumpStatus(){
-        return null;
-    }
-    //获取实时的led灯状态
-    @GetMapping("led-status")
-    public String getLEDStatus(){
-        return null;
-    }
     //获取全部的温度信息
     @GetMapping("/temperature-all")
     public Result getAllTemperature(){
