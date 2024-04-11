@@ -4,6 +4,7 @@ import com.anranruozhu.common.Result;
 import com.anranruozhu.entity.UserInfo;
 import com.anranruozhu.entity.Weather;
 import com.anranruozhu.service.LoginService;
+import com.anranruozhu.service.OpinionService;
 import com.anranruozhu.service.UserInfoService;
 import com.anranruozhu.service.WeatherService;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +35,8 @@ public class UserManagementController {
     @Autowired
     private WeatherService weatherService;
     @Autowired
+    private OpinionService opinionService;
+    @Autowired
     private RedisTemplate<String, String> redisTemplate;
     @PostMapping("/SetUserInfo")
     public Result SetUserInfo(@RequestBody UserInfo userInfo, HttpServletRequest request){
@@ -57,6 +60,12 @@ public class UserManagementController {
         rs.setData(weathers);
         return rs;
     }
+
+    @PostMapping("/opinion")
+    public Result addOpinion(@RequestParam String phone_number, @RequestParam String description){
+        return opinionService.addOpinion(phone_number, description);
+    }
+
     @PostMapping("/UpdatePassword")
     public Result UpdatePassword(@RequestParam String code, @RequestParam String phoneNumber , @RequestParam String NewPassword, HttpServletRequest request){
         // 处理注册逻辑
