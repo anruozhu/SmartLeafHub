@@ -1,0 +1,142 @@
+{
+	"easycom": {
+		"^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue"
+	},
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "首页"
+			}
+		},
+		{
+			"path": "pages/center/center",
+			"style": {
+				"navigationBarTitleText": "个人中心"
+			}
+		}
+	    ,{
+            "path" : "pages/Sign_In/Sign_In",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        },
+		{
+            "path" : "pages/light/light",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "光照管理",
+                "enablePullDownRefresh": false
+            }
+            
+        },
+		{
+		    "path" : "pages/temperature/temperature",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "温度管理",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		},
+		{
+		    "path" : "pages/wet/wet",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "湿度管理",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		}
+        ,{
+            "path" : "pages/myinfo/myinfo",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "个人信息",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/aboutus/aboutus",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "关于我们",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/feedback/feedback",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "意见反馈",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/passwdModify/passwdModify",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/log/log",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uView",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+	    "color": "#909399",
+	    "selectedColor": "#36ab60",
+	    "borderStyle": "black",
+	    "backgroundColor": "#ffffff",
+	    "list": [{
+	        "pagePath": "pages/index/index",
+	        "iconPath": "static/index.png",
+	        "selectedIconPath": "static/index-selected.png",
+	        "text": "首页"
+	    },
+		{
+		    "pagePath": "pages/light/light",
+		    "iconPath": "static/光照.png",
+		    "selectedIconPath": "static/光照-selected.png",
+		    "text": "光照管理"
+		},
+		{
+		    "pagePath": "pages/temperature/temperature",
+		    "iconPath": "static/温度.png",
+		    "selectedIconPath": "static/温度-selected.png",
+		    "text": "温度管理"
+		},
+		{
+		    "pagePath": "pages/wet/wet",
+		    "iconPath": "static/湿度.png",
+		    "selectedIconPath": "static/湿度-selected.png",
+		    "text": "湿度管理"
+		},
+		{
+	        "pagePath": "pages/center/center",
+	        "iconPath": "static/center.png",
+	        "selectedIconPath": "static/center-selected.png",
+	        "text": "个人信息"
+	    }]
+	}
+}

@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "echarts": "^5.5.0",
+    "qweather-icons": "^1.6.0"
+  }
+}
