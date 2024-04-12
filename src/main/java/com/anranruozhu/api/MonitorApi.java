@@ -1,19 +1,11 @@
 package com.anranruozhu.api;
 
 import com.anranruozhu.common.Result;
-import com.anranruozhu.entity.UserInfo;
-import com.anranruozhu.entity.soilData;
-import com.anranruozhu.mapper.UserMapper;
-import com.anranruozhu.service.LoginService;
 import com.anranruozhu.service.MonitorService;
-import com.anranruozhu.service.UserInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 /**
  * @author anranruozhu
