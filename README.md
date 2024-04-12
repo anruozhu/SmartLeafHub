@@ -1,7 +1,7 @@
 # SmartLeafHub
-中软实训24组开发项目后端
+中软实训24组开发项目
 
-### 技术使用
+### 后端技术使用
 ~~~xml 
 springboot 2.2.1.RELEASE
 mybatis
