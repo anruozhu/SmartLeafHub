@@ -263,6 +263,26 @@ public class MonitorServiceImpl implements MonitorService {
         return result;
     }
 
+    @Override
+    public Result getAllShow() {
+        Result  result=new Result();
+        try{
+           Float soilData= soilDataMapper.ShowLast();
+            Float temp=temperstureDataMapper.ShowLast();
+            Float light=lightDataMapper.ShowLast();
+            result.setCode(200);
+            result.setData(new JSONObject()
+                    .set("soilData",soilData)
+                    .set("temp",temp)
+                    .set("light",light));
+            result.setMsg("获取成功");
+        }catch (Exception e){
+            result.setCode(500);
+            result.setMsg("获取成功");
+        }
+        return result;
+    }
+
     @NotNull
     private Result getResult(Result rs, int n, float total, float max, float min) {
         float avg=total/n;

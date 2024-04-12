@@ -5,6 +5,7 @@ import com.anranruozhu.service.DataAccess;
 import com.anranruozhu.service.MonitorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,9 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
  * @Description 大屏端的展示
  * @create 2024/4/11 下午4:17
  **/
-@RestController("/api/vsualizer")
+@RestController
+@RequestMapping("/api/vsualizer")
 public class Vsualizer
-{   @Autowired
+{
+    @Autowired
     private MonitorService monitorService;
     @Autowired
     private DataAccess dataAccess;

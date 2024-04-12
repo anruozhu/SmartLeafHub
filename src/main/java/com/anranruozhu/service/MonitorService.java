@@ -1,9 +1,6 @@
 package com.anranruozhu.service;
 
 import com.anranruozhu.common.Result;
-import com.anranruozhu.entity.soilData;
-
-import java.util.List;
 
 public interface MonitorService {
     /**
@@ -58,4 +55,8 @@ public interface MonitorService {
      * 获取预警信息
      */
     Result getAlarm(int alertType);
+    /**
+     *获取实时的所有信息
+     */
+    Result getAllShow();
 }
