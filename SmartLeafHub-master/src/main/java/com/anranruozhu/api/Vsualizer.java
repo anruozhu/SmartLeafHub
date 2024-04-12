@@ -24,21 +24,10 @@ public class Vsualizer
     @Autowired
     private DataAccess dataAccess;
     //获取实时的温度
-    @GetMapping("/temperature")
+    @GetMapping("/show_all")
     public Result getTemperature(){
-        return monitorService.getNewTemperature();
+        return monitorService.getAllShow();
     }
-    //获取实时的湿度
-    @GetMapping("/humidity")
-    public Result getHumidity(){
-        return monitorService.getNewHumidity();
-    }
-    //获取实时的光照强度
-    @GetMapping("/light-intensity")
-    public Result getLightIntensity() {
-        return monitorService.getNewLightIntensity();
-    }
-
     @GetMapping("/temperature-week")
     public Result getTemperatureWeek(){
         return monitorService.getWeekTemperature();
