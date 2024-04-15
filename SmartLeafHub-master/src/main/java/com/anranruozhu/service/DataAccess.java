@@ -5,8 +5,9 @@ import com.anranruozhu.entity.DeviceState;
 import com.anranruozhu.entity.LightInstrustions;
 
 public interface DataAccess {
-    void SaveSersor(String message);
-    void SaveSoil(String message);
+
+    void SaveSersor(String message,boolean soilAuto,boolean temperAuto);
+    void SaveLight(String message,boolean lightAuto);
     void SaveDeviceState(int pumpCtrlState,
                          int pumpPowerState,
                          int fanMode,

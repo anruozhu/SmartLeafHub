@@ -2,7 +2,9 @@ package com.anranruozhu.api;
 
 import cn.hutool.json.JSONObject;
 import com.anranruozhu.common.Result;
+import com.anranruozhu.config.AutoConfig;
 import com.anranruozhu.service.DataAccess;
+import com.anranruozhu.service.mqtt.receiveclient.MqttAcceptCallback;
 import com.anranruozhu.service.mqtt.sendclient.MqttSendClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,9 @@ import org.springframework.web.bind.annotation.*;
 public class MqttController {
     @Autowired
     private MqttSendClient client1;
+    @Autowired
+    AutoConfig autoConfig;
+
     @Autowired
     private DataAccess dataAccess;
     @GetMapping("/WindAndPumpctl")
@@ -69,5 +74,50 @@ public class MqttController {
     @GetMapping("/getFanStatus")
     public Result getFanStatus() {
         return dataAccess.getFanStatus();
+    }
+@GetMapping("/Get_Fen_auto")
+    public Result getFenAuto(){
+        Result rs=new Result();
+        rs.setCode(200);
+        if(autoConfig.isFenAuto()){
+            autoConfig.setFenAuto(false);
+            rs.setData(autoConfig.isFenAuto());
+            rs.setMsg("风扇自动化模式已关");
+        }else{
+            autoConfig.setFenAuto(true);
+            rs.setData(autoConfig.isFenAuto());
+            rs.setMsg("风扇自动化模式已开");
+        }
+        return rs;
+}
+    @GetMapping("/Get_Pump_auto")
+    public Result getPumpAuto(){
+        Result rs=new Result();
+        rs.setCode(200);
+        if(autoConfig.isPumpAuto()){
+            autoConfig.setPumpAuto(false);
+            rs.setData(autoConfig.isPumpAuto());
+            rs.setMsg("水泵自动化模式已关");
+        }else{
+            autoConfig.setPumpAuto(true);
+            rs.setData(autoConfig.isPumpAuto());
+            rs.setMsg("水泵自动化模式已开");
+        }
+        return rs;
+    }
+    @GetMapping("/Get_Light_auto")
+    public Result getLightAuto(){
+        Result rs=new Result();
+        rs.setCode(200);
+        if(autoConfig.isLightAuto()){
+            autoConfig.setLightAuto(true);
+            rs.setData(autoConfig.isLightAuto());
+            rs.setMsg("灯光自动化模式已关");
+        }else{
+            autoConfig.setLightAuto(false);
+            rs.setData(autoConfig.isLightAuto());
+            rs.setMsg("灯光自动化模式已开");
+        }
+        return rs;
     }
 }

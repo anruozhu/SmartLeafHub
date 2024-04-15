@@ -43,3 +43,7 @@ mqtt:
   defaultTopic: bcd
   isOpen: true
   qos: 1
+autoconfig:
+  fen-auto: false
+  pump-auto: false
+  light-auto: false

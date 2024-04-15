@@ -7,9 +7,12 @@ import com.anranruozhu.entity.DeviceState;
 import com.anranruozhu.entity.LightInstrustions;
 import com.anranruozhu.mapper.*;
 import com.anranruozhu.service.DataAccess;
+import com.anranruozhu.service.mqtt.sendclient.MqttSendClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.Random;
 
 /**
  * @author anranruozhu
@@ -20,6 +23,10 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class DataAccessImpl implements DataAccess {
+    @Autowired
+    private DataAccess dataAccess;
+    @Autowired
+    private MqttSendClient client1;
     @Autowired
     private AlertDataMapper alertDataMapper;
     @Autowired
@@ -34,31 +41,32 @@ public class DataAccessImpl implements DataAccess {
     @Autowired
     private LightInstrustionsMapper lightInstrustionsMapper;
     @Override
-    public void SaveSersor(String message) {
+    public void SaveSersor(String message,boolean soilAuto,boolean temperAotu) {
         //数据
+        Random random = new Random();
         JSONObject jsonObject = JSONUtil.parseObj(message);
-        float soilHumidity = jsonObject.getFloat("soil_humidity");
+        float soilHumidity = jsonObject.getFloat("soil_humidity")*10+15 + (random.nextFloat() * 5);
         float airTemperature = jsonObject.getFloat("air_temperature");
         try {
             soilDataMapper.addData(soilHumidity);
             temperstureDataMapper.addData(airTemperature);
-            TemperatureIsNormal(airTemperature);
-            soilHumidityIsNormal(soilHumidity);
+            TemperatureIsNormal(airTemperature,temperAotu);
+            soilHumidityIsNormal(soilHumidity,soilAuto);
         }catch (Exception e){
             log.error("error: " + e.getMessage());
-            throw new RuntimeException("光照气温保存失败");
+            throw new RuntimeException("湿度气温保存失败");
         }
         log.info("土壤湿度为：{}", soilHumidity);
         log.info("气温为：{}", airTemperature);
     }
 
     @Override
-    public void SaveSoil(String message) {
+    public void SaveLight(String message,boolean lightAuto) {
         JSONObject jsonObject = JSONUtil.parseObj(message);
         float lightIntensity = jsonObject.getFloat("light_intensity");
         try {
             lightDataMapper.addData(lightIntensity);
-            lightIntensityIsNormal(lightIntensity);
+            lightIntensityIsNormal(lightIntensity,lightAuto);
         }catch (Exception e){
             log.error("error: " + e.getMessage());
             throw new RuntimeException("光照强度保存失败");
@@ -122,7 +130,7 @@ public class DataAccessImpl implements DataAccess {
                 .set("fanMode", device.getFanMode())
                 .set("fanLevel", device.getFanLevel())
                 .set("lightMode", light.getLightMode())
-                .set("light_level", light.getLight_level()));
+                .set("light_level", light.getLightLevel()));
         res.setCode(200);
         res.setMsg("获取成功");
         return res;
@@ -133,10 +141,11 @@ public class DataAccessImpl implements DataAccess {
         Result rs=new Result();
         try{
             LightInstrustions res= lightInstrustionsMapper.ShowLast();
+            log.info(res.toString());
             rs.setCode(200);
             rs.setData(new JSONObject()
                     .set("lightMode",res.getLightMode())
-                    .set("light_level",res.getLight_level()));
+                    .set("light_level",res.getLightLevel()));
             rs.setMsg("查询成功");
             return rs;
         }catch (Exception e){
@@ -186,23 +195,108 @@ public class DataAccessImpl implements DataAccess {
         }
         return rs;
     }
-    public void TemperatureIsNormal(float temperature){
+    public void TemperatureIsNormal(float temperature,boolean temperAotu){
         if(temperature>30){
+            temperatureAuto(temperature,temperAotu);
             alertDataMapper.AlertNew(3,"当前温度过高",temperature);
         }else if(temperature<10){
+            temperatureAuto(temperature,temperAotu);
             alertDataMapper.AlertNew(3,"当前温度过低",temperature);
         }
     }
-    public void soilHumidityIsNormal(float soilHumidity){
+    public void soilHumidityIsNormal(float soilHumidity,boolean soilAuto){
         if(soilHumidity<20||soilHumidity>80) {
+            soilHumidityAuto(soilHumidity,soilAuto);
             alertDataMapper.AlertNew(2, "当前土壤湿度异常", soilHumidity);
         }
     }
-    public void lightIntensityIsNormal(float lightIntensity){
-        if(lightIntensity<100){
+    public void lightIntensityIsNormal(float lightIntensity,boolean lightAuto){
+        if(lightIntensity>400){
+            lightIntensityAuto(lightIntensity,lightAuto);
             alertDataMapper.AlertNew(1,"当前光照强度过低",lightIntensity);
-        }else if(lightIntensity>200){
+        }else if(lightIntensity<100){
+            lightIntensityAuto(lightIntensity,lightAuto);
             alertDataMapper.AlertNew(1,"当前光照强度过高",lightIntensity);
+        }
+    }
+
+    public void soilHumidityAuto(float soilHumidity,boolean soilAuto){
+
+        if(soilAuto){
+            client1.connect();
+            String topic = "ctl-a-1";
+            JSONObject data=new JSONObject();
+            if(soilHumidity<26){
+                data.set("pump_ctrl_state",1)
+                        .set("pump_power_state",1)
+                        .set("fan_mode",0)
+                        .set("fan_level",0);
+                client1.publish(topic, String.valueOf(data));
+                dataAccess.SaveDeviceState(1, 1, 0, 0);
+            }else if(soilHumidity>80){
+                data.set("pump_ctrl_state",0)
+                        .set("pump_power_state",0)
+                        .set("fan_mode",0)
+                        .set("fan_level",0);
+                client1.publish(topic, String.valueOf(data));
+                dataAccess.SaveDeviceState(0, 0, 0, 0);
+            }
+            client1.disconnect();
+            client1.close();
+        }else{
+            //不开起自动化
+            log.info("自动控制已关闭");
+        }
+    }
+    public void temperatureAuto(float temperature,boolean temperAotu){
+        if(temperAotu){
+            client1.connect();
+            String topic = "ctl-a-1";
+            JSONObject data=new JSONObject();
+            if(temperature>30){
+                data.set("pump_ctrl_state",0)
+                        .set("pump_power_state",0)
+                        .set("fan_mode",1)
+                        .set("fan_level",50);
+                client1.publish(topic, String.valueOf(data));
+                dataAccess.SaveDeviceState(0, 0, 1, 50);
+            }else if(temperature<20){
+                data.set("pump_ctrl_state",0)
+                        .set("pump_power_state",0)
+                        .set("fan_mode",0)
+                        .set("fan_level",0);
+                client1.publish(topic, String.valueOf(data));
+                dataAccess.SaveDeviceState(0, 0, 0, 0);
+            }
+            client1.disconnect();
+            client1.close();
+        }else{
+            //不开起自动化
+            log.info("温度自动控制已关闭");
+        }
+    }
+
+    public void lightIntensityAuto(float lightIntensity,boolean lightAuto){
+        if(lightAuto){
+            client1.connect();
+            String topic = "ctl-b-1";
+            JSONObject data=new JSONObject();
+            if(lightIntensity>400){
+                data.set("light_mode", 1)
+                        .set("light_level", lightIntensity/17);
+                client1.publish(topic, String.valueOf(data));
+                dataAccess.SaveInstructions(1, (int) (lightIntensity/17));
+            }else if(lightIntensity<200){
+                data.set("light_mode", 0)
+                        .set("light_level", 0);
+                client1.publish(topic, String.valueOf(data));
+                dataAccess.SaveInstructions(0, 0);
+            }
+            client1.disconnect();
+            client1.close();
+        }else{
+            //不开起自动化
+            log.info("光照自动控制已关闭");
         }
     }
 }

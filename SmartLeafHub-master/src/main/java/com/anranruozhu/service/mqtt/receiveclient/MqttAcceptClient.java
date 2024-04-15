@@ -16,7 +16,7 @@ import java.util.Date;
 
 @Slf4j
 @Component
-public class MqttAcceptClient {
+public class  MqttAcceptClient {
 
 
     @Autowired

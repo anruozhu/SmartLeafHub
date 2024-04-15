@@ -14,6 +14,6 @@ import java.sql.Timestamp;
 public class LightInstrustions {
     private int id;
     private int lightMode;
-    private int light_level ;
+    private int lightLevel ;
     private Timestamp createdAt ;
 }

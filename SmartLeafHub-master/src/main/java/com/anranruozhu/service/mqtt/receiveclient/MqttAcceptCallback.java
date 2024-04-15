@@ -1,6 +1,8 @@
 package com.anranruozhu.service.mqtt.receiveclient;
 
+import com.anranruozhu.config.AutoConfig;
 import com.anranruozhu.service.DataAccess;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
@@ -12,7 +14,10 @@ import java.io.UnsupportedEncodingException;
 
 @Slf4j
 @Component
+@Data
 public class MqttAcceptCallback implements MqttCallbackExtended {
+    @Autowired
+    private AutoConfig autoConfig;
     @Autowired
     private MqttAcceptClient mqttAcceptClient;
     @Autowired
@@ -45,9 +50,12 @@ public class MqttAcceptCallback implements MqttCallbackExtended {
         String s=new String(mqttMessage.getPayload());
         log.info("【MQTT-消费端】接收消息内容 : " + s);
         if(topic.equals(TOPIC_A)){
-            da.SaveSersor(s);
+            log.info(String.valueOf(autoConfig.isFenAuto()));
+            log.info(String.valueOf(autoConfig.isPumpAuto()));
+            da.SaveSersor(s,autoConfig.isPumpAuto(),autoConfig.isFenAuto());
         } else if (topic.equals(TOPIC_B)) {
-            da.SaveSoil(s);
+            log.info(String.valueOf(autoConfig.isLightAuto()));
+            da.SaveLight(s,autoConfig.isLightAuto());
         };
     }
     /**
