@@ -1,6 +1,5 @@
 package com.anranruozhu.service.mqtt.receiveclient;
 
-import com.anranruozhu.config.AutoConfig;
 import com.anranruozhu.entity.AutoStatus;
 import com.anranruozhu.mapper.AutoStatusMapper;
 import com.anranruozhu.service.DataAccess;

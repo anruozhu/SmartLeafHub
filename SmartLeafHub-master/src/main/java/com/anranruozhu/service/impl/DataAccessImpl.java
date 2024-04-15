@@ -127,13 +127,17 @@ public class DataAccessImpl implements DataAccess {
         Result res = new Result();
         DeviceState device = getDeviceState();
         LightInstrustions light = getLightState();
-
+        AutoStatus autoStatus = autoStatusMapper.getStatus();
         res.setData(new JSONObject().set("pumpCtrlState", device.getPumpCtrlState())
                 .set("pumpPowerState", device.getPumpPowerState())
                 .set("fanMode", device.getFanMode())
                 .set("fanLevel", device.getFanLevel())
                 .set("lightMode", light.getLightMode())
-                .set("light_level", light.getLightLevel()));
+                .set("light_level", light.getLightLevel())
+                .set("LightStatus",autoStatus.getLightStatus())
+                .set("FenStatus",autoStatus.getFenStatus())
+                .set("PumpStatus",autoStatus.getPumpStatus())
+        );
         res.setCode(200);
         res.setMsg("获取成功");
         return res;

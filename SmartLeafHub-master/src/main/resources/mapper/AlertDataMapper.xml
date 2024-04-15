@@ -14,4 +14,10 @@
         ORDER BY alert_time DESC
             LIMIT 1;
     </select>
+    <select id="getAlertAll" resultType="com.anranruozhu.entity.AlertData">
+        SELECT *
+        FROM alert_data
+        ORDER BY alert_time DESC
+        LIMIT 3;
+    </select>
 </mapper>

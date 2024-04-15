@@ -3,6 +3,7 @@ package com.anranruozhu.api;
 import com.anranruozhu.common.Result;
 import com.anranruozhu.entity.User;
 import com.anranruozhu.entity.registerInfo;
+import com.anranruozhu.mapper.AlertDataMapper;
 import com.anranruozhu.service.LoginService;
 import com.anranruozhu.service.RegisterService;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @CrossOrigin(origins = "*")
 public class AuthController {
+
     @Autowired
     private LoginService loginService;
     @Autowired

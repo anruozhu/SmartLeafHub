@@ -1,10 +1,13 @@
 package com.anranruozhu.api;
 
+import cn.hutool.json.JSONObject;
+import com.alibaba.fastjson.JSON;
 import com.anranruozhu.common.Result;
-import com.anranruozhu.config.AutoConfig;
-import com.anranruozhu.entity.AutoStatus;
-import com.anranruozhu.entity.Weather;
+import com.anranruozhu.entity.*;
+import com.anranruozhu.mapper.AlertDataMapper;
 import com.anranruozhu.mapper.AutoStatusMapper;
+import com.anranruozhu.mapper.DeviceStateMapper;
+import com.anranruozhu.mapper.LightInstrustionsMapper;
 import com.anranruozhu.service.DataAccess;
 import com.anranruozhu.service.MonitorService;
 import com.anranruozhu.service.WeatherService;
@@ -28,7 +31,10 @@ import java.util.List;
 @RequestMapping("/api/vsualizer")
 @Data
 public class Vsualizer
+
 {
+    @Autowired
+    private AlertDataMapper alertDataMapper;
     @Autowired
     private AutoStatusMapper autoStatusMapper;
     @Autowired
@@ -36,9 +42,11 @@ public class Vsualizer
     @Autowired
     private DataAccess dataAccess;
     @Autowired
-    private AutoConfig autoConfig;
-    @Autowired
     private WeatherService weatherService;
+    @Autowired
+    private DeviceStateMapper deviceStateMapper;
+    @Autowired
+    private LightInstrustionsMapper lightInstrustionsMapper;
     //获取实时的温度
     @GetMapping("/show_all")
     public Result getTemperature(){
@@ -78,34 +86,64 @@ public class Vsualizer
     }
 
     @GetMapping("/getPumpAutoStatus")
-    public String getPumpAutoStatus() {
+    public Result getPumpAutoStatus() {
+        Result rs=new Result();
+        DeviceState ds=deviceStateMapper.ShowLast();
         AutoStatus data=autoStatusMapper.getStatus();
+        JSONObject res=new JSONObject();
         System.out.println(data.getPumpStatus());
-        if(data.getPumpStatus()==1){
-            return "开";
+        if(ds.getPumpCtrlState()>0) {
+            res.set("pump_status","运行中");
         }else{
-            return "关";
+            res.set("pump_status","已关闭");
         }
+        if(data.getPumpStatus()==1){
+            res.set("pump_auto","开");
+        }else{
+           res.set("pump_auto","关");
+        }
+        rs.setData(res);
+        return rs;
     }
     @GetMapping("/getLightAutoStatus")
-    public String getLightAutoStatus() {
+    public Result getLightAutoStatus() {
+        Result rs=new Result();
+        LightInstrustions ds=lightInstrustionsMapper.ShowLast();
         AutoStatus data=autoStatusMapper.getStatus();
+        JSONObject res=new JSONObject();
         System.out.println(data.getLightStatus());
-        if(data.getLightStatus()==1){
-            return "开";
+        if(ds.getLightMode()>0) {
+            res.set("light_status","运行中");
         }else{
-            return "关";
+            res.set("light_status","已关闭");
         }
+        if(data.getLightStatus()==1){
+            res.set("light_auto","开");
+        }else{
+            res.set("light_auto","关");
+        }
+        rs.setData(res);
+        return rs;
     }
     @GetMapping("/getFenAutoStatus")
-    public String getFenAutoStatus() {
+    public Result getFenAutoStatus() {
+        Result rs=new Result();
+        DeviceState ds=deviceStateMapper.ShowLast();
         AutoStatus data=autoStatusMapper.getStatus();
-        System.out.println(data.getFenStatus());
-        if(data.getFenStatus()==1){
-            return "开";
+        JSONObject res=new JSONObject();
+        System.out.println(ds.getFanMode());
+        if(ds.getFanMode()>0) {
+            res.set("fen_status","运行中");
         }else{
-            return "关";
+            res.set("fen_status","已关闭");
         }
+        if(data.getFenStatus()==1){
+            res.set("fen_auto","开");
+        }else{
+            res.set("fen_auto","关");
+        }
+        rs.setData(res);
+        return rs;
     }
     @GetMapping("/weather")
     public Result  getWeather() throws IOException {
@@ -115,6 +153,21 @@ public class Vsualizer
         rs.setCode(200);
         rs.setMsg("查询成功");
         rs.setData(weathers);
+        return rs;
+    }
+    @GetMapping("/getAutoStatus")
+    public Result getAutoStatus() {
+        Result rs =new Result();
+        try{
+           List<AlertData> ad=alertDataMapper.getAlertAll();
+           rs.setCode(200);
+           rs.setMsg("查询成功");
+           rs.setData(ad);
+        }catch (Exception e){
+            rs.setCode(500);
+            rs.setMsg("查询失败");
+            e.printStackTrace();
+        }
         return rs;
     }
  }

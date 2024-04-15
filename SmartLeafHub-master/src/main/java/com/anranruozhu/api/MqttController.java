@@ -2,7 +2,6 @@ package com.anranruozhu.api;
 
 import cn.hutool.json.JSONObject;
 import com.anranruozhu.common.Result;
-import com.anranruozhu.config.AutoConfig;
 import com.anranruozhu.entity.AutoStatus;
 import com.anranruozhu.mapper.AutoStatusMapper;
 import com.anranruozhu.service.DataAccess;
@@ -16,11 +15,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/secure")
 @CrossOrigin(origins = "*")
 public class MqttController {
-    private Vsualizer vsualizer;
     @Autowired
     private MqttSendClient client1;
-    @Autowired
-    AutoConfig autoConfig;
     @Autowired
     private DataAccess dataAccess;
     @Qualifier("autoStatusMapper")
