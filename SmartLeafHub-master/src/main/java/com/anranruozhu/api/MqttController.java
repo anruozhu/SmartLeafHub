@@ -3,10 +3,12 @@ package com.anranruozhu.api;
 import cn.hutool.json.JSONObject;
 import com.anranruozhu.common.Result;
 import com.anranruozhu.config.AutoConfig;
+import com.anranruozhu.entity.AutoStatus;
+import com.anranruozhu.mapper.AutoStatusMapper;
 import com.anranruozhu.service.DataAccess;
-import com.anranruozhu.service.mqtt.receiveclient.MqttAcceptCallback;
 import com.anranruozhu.service.mqtt.sendclient.MqttSendClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -14,13 +16,17 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/secure")
 @CrossOrigin(origins = "*")
 public class MqttController {
+    private Vsualizer vsualizer;
     @Autowired
     private MqttSendClient client1;
     @Autowired
     AutoConfig autoConfig;
-
     @Autowired
     private DataAccess dataAccess;
+    @Qualifier("autoStatusMapper")
+    @Autowired
+    private AutoStatusMapper autoStatusMapper;
+
     @GetMapping("/Pumpctl")
     public Result pumpctl(@RequestParam int p_c_state){
         Result rs=new Result();
@@ -82,65 +88,76 @@ public class MqttController {
         return rs;
     }
 
+
     @GetMapping("/get_device_state")
     public Result getDeviceState(){
         return dataAccess.getDeviceAndLightState();
     }
+
     @GetMapping("/getLightStatus")
     public Result getLightStatus() {
         return dataAccess.getLightInstrustions();
     }
+
     @GetMapping("/getPumpStatus")
     public Result getPumpStatus() {
         return dataAccess.getPumpStatus();
     }
+
     @GetMapping("/getFanStatus")
     public Result getFanStatus() {
         return dataAccess.getFanStatus();
     }
-@GetMapping("/Get_Fen_auto")
+
+    @GetMapping("/Get_Fen_auto")
     public Result getFenAuto(){
         Result rs=new Result();
         rs.setCode(200);
-        if(autoConfig.isFenAuto()){
-            autoConfig.setFenAuto(false);
-            rs.setData(autoConfig.isFenAuto());
+        AutoStatus data=autoStatusMapper.getStatus();
+        if(data.getFenStatus()==1){
+            data.setFenStatus(0);
+            rs.setData(data.getFenStatus()==1);
             rs.setMsg("风扇自动化模式已关");
         }else{
-            autoConfig.setFenAuto(true);
-            rs.setData(autoConfig.isFenAuto());
+            data.setFenStatus(1);
+            rs.setData(data.getFenStatus()==1);
             rs.setMsg("风扇自动化模式已开");
         }
+        autoStatusMapper.addStatus(data.getLightStatus(), data.getPumpStatus(), data.getFenStatus());
         return rs;
 }
     @GetMapping("/Get_Pump_auto")
     public Result getPumpAuto(){
         Result rs=new Result();
         rs.setCode(200);
-        if(autoConfig.isPumpAuto()){
-            autoConfig.setPumpAuto(false);
-            rs.setData(autoConfig.isPumpAuto());
+        AutoStatus data=autoStatusMapper.getStatus();
+        if(data.getPumpStatus()==1){
+            data.setPumpStatus(0);
+            rs.setData(data.getPumpStatus()==1);
             rs.setMsg("水泵自动化模式已关");
         }else{
-            autoConfig.setPumpAuto(true);
-            rs.setData(autoConfig.isPumpAuto());
-            rs.setMsg("水泵自动化模式已开");
+            data.setPumpStatus(1);
+            rs.setData(data.getPumpStatus()==1);
+            rs.setMsg("风扇自动化模式已开");
         }
+        autoStatusMapper.addStatus(data.getLightStatus(), data.getPumpStatus(), data.getFenStatus());
         return rs;
     }
     @GetMapping("/Get_Light_auto")
     public Result getLightAuto(){
         Result rs=new Result();
         rs.setCode(200);
-        if(autoConfig.isLightAuto()){
-            autoConfig.setLightAuto(true);
-            rs.setData(autoConfig.isLightAuto());
-            rs.setMsg("灯光自动化模式已关");
+        AutoStatus data=autoStatusMapper.getStatus();
+        if(data.getLightStatus()==1){
+            data.setLightStatus(0);
+            rs.setData(data.getLightStatus()==1);
+            rs.setMsg("风扇自动化模式已关");
         }else{
-            autoConfig.setLightAuto(false);
-            rs.setData(autoConfig.isLightAuto());
-            rs.setMsg("灯光自动化模式已开");
+            data.setLightStatus(1);
+            rs.setData(data.getLightStatus()==1);
+            rs.setMsg("风扇自动化模式已开");
         }
+        autoStatusMapper.addStatus(data.getLightStatus(), data.getPumpStatus(), data.getFenStatus());
         return rs;
     }
 }

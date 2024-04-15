@@ -3,6 +3,7 @@ package com.anranruozhu.service.impl;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.anranruozhu.common.Result;
+import com.anranruozhu.entity.AutoStatus;
 import com.anranruozhu.entity.DeviceState;
 import com.anranruozhu.entity.LightInstrustions;
 import com.anranruozhu.mapper.*;
@@ -40,8 +41,10 @@ public class DataAccessImpl implements DataAccess {
     private DeviceStateMapper deviceStateMapper;
     @Autowired
     private LightInstrustionsMapper lightInstrustionsMapper;
+    @Autowired
+    private AutoStatusMapper autoStatusMapper;
     @Override
-    public void SaveSersor(String message,boolean soilAuto,boolean temperAotu) {
+    public void SaveSersor(String message,int soilAuto,int temperAotu) {
         //数据
         Random random = new Random();
         JSONObject jsonObject = JSONUtil.parseObj(message);
@@ -61,7 +64,7 @@ public class DataAccessImpl implements DataAccess {
     }
 
     @Override
-    public void SaveLight(String message,boolean lightAuto) {
+    public void SaveLight(String message,int lightAuto) {
         JSONObject jsonObject = JSONUtil.parseObj(message);
         float lightIntensity = jsonObject.getFloat("light_intensity");
         try {
@@ -141,11 +144,13 @@ public class DataAccessImpl implements DataAccess {
         Result rs=new Result();
         try{
             LightInstrustions res= lightInstrustionsMapper.ShowLast();
+            AutoStatus autoStatus = autoStatusMapper.getStatus();
             log.info(res.toString());
             rs.setCode(200);
             rs.setData(new JSONObject()
                     .set("lightMode",res.getLightMode())
-                    .set("light_level",res.getLightLevel()));
+                    .set("light_level",res.getLightLevel())
+                    .set("autoStatus",autoStatus.getLightStatus()));
             rs.setMsg("查询成功");
             return rs;
         }catch (Exception e){
@@ -162,10 +167,12 @@ public class DataAccessImpl implements DataAccess {
 
         try{
             DeviceState ds=deviceStateMapper.ShowLast();
+            AutoStatus autoStatus = autoStatusMapper.getStatus();
             rs.setCode(200);
             rs.setData(new JSONObject()
                     .set("pumpCtrlState",ds.getPumpCtrlState())
-                    .set("pumpPowerState",ds.getPumpPowerState()));
+                    .set("pumpPowerState",ds.getPumpPowerState())
+                    .set("autoStatus",autoStatus.getPumpStatus()));
             rs.setMsg("查询成功");
             return rs;
         }catch (Exception e){
@@ -182,10 +189,12 @@ public class DataAccessImpl implements DataAccess {
 
         try{
             DeviceState ds=deviceStateMapper.ShowLast();
+            AutoStatus autoStatus = autoStatusMapper.getStatus();
             rs.setCode(200);
             rs.setData(new JSONObject()
                     .set("fanMode",ds.getFanMode())
-                    .set("fanLevel",ds.getFanLevel()));
+                    .set("fanLevel",ds.getFanLevel())
+                    .set("autoStatus",autoStatus.getFenStatus()));
             rs.setMsg("查询成功");
             return rs;
         }catch (Exception e){
@@ -195,7 +204,7 @@ public class DataAccessImpl implements DataAccess {
         }
         return rs;
     }
-    public void TemperatureIsNormal(float temperature,boolean temperAotu){
+    public void TemperatureIsNormal(float temperature,int temperAotu){
         if(temperature>30){
             temperatureAuto(temperature,temperAotu);
             alertDataMapper.AlertNew(3,"当前温度过高",temperature);
@@ -204,13 +213,13 @@ public class DataAccessImpl implements DataAccess {
             alertDataMapper.AlertNew(3,"当前温度过低",temperature);
         }
     }
-    public void soilHumidityIsNormal(float soilHumidity,boolean soilAuto){
+    public void soilHumidityIsNormal(float soilHumidity,int soilAuto){
         if(soilHumidity<20||soilHumidity>80) {
             soilHumidityAuto(soilHumidity,soilAuto);
             alertDataMapper.AlertNew(2, "当前土壤湿度异常", soilHumidity);
         }
     }
-    public void lightIntensityIsNormal(float lightIntensity,boolean lightAuto){
+    public void lightIntensityIsNormal(float lightIntensity,int lightAuto){
         if(lightIntensity>400){
             lightIntensityAuto(lightIntensity,lightAuto);
             alertDataMapper.AlertNew(1,"当前光照强度过低",lightIntensity);
@@ -220,9 +229,8 @@ public class DataAccessImpl implements DataAccess {
         }
     }
 
-    public void soilHumidityAuto(float soilHumidity,boolean soilAuto){
-
-        if(soilAuto){
+    public void soilHumidityAuto(float soilHumidity,int soilAuto){
+        if(soilAuto==1){
             client1.connect();
             String topic = "ctl-a-1";
             JSONObject data=new JSONObject();
@@ -248,8 +256,8 @@ public class DataAccessImpl implements DataAccess {
             log.info("自动控制已关闭");
         }
     }
-    public void temperatureAuto(float temperature,boolean temperAotu){
-        if(temperAotu){
+    public void temperatureAuto(float temperature,int temperAotu){
+        if(temperAotu==1){
             client1.connect();
             String topic = "ctl-a-1";
             JSONObject data=new JSONObject();
@@ -276,8 +284,8 @@ public class DataAccessImpl implements DataAccess {
         }
     }
 
-    public void lightIntensityAuto(float lightIntensity,boolean lightAuto){
-        if(lightAuto){
+    public void lightIntensityAuto(float lightIntensity,int lightAuto){
+        if(lightAuto==1){
             client1.connect();
             String topic = "ctl-b-1";
             JSONObject data=new JSONObject();

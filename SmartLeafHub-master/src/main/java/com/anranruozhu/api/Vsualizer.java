@@ -1,13 +1,22 @@
 package com.anranruozhu.api;
 
 import com.anranruozhu.common.Result;
+import com.anranruozhu.config.AutoConfig;
+import com.anranruozhu.entity.AutoStatus;
+import com.anranruozhu.entity.Weather;
+import com.anranruozhu.mapper.AutoStatusMapper;
 import com.anranruozhu.service.DataAccess;
 import com.anranruozhu.service.MonitorService;
+import com.anranruozhu.service.WeatherService;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * @author anranruozhu
@@ -17,12 +26,19 @@ import org.springframework.web.bind.annotation.RestController;
  **/
 @RestController
 @RequestMapping("/api/vsualizer")
+@Data
 public class Vsualizer
 {
+    @Autowired
+    private AutoStatusMapper autoStatusMapper;
     @Autowired
     private MonitorService monitorService;
     @Autowired
     private DataAccess dataAccess;
+    @Autowired
+    private AutoConfig autoConfig;
+    @Autowired
+    private WeatherService weatherService;
     //获取实时的温度
     @GetMapping("/show_all")
     public Result getTemperature(){
@@ -60,4 +76,45 @@ public class Vsualizer
     public Result getFanStatus() {
         return dataAccess.getFanStatus();
     }
-}
+
+    @GetMapping("/getPumpAutoStatus")
+    public String getPumpAutoStatus() {
+        AutoStatus data=autoStatusMapper.getStatus();
+        System.out.println(data.getPumpStatus());
+        if(data.getPumpStatus()==1){
+            return "开";
+        }else{
+            return "关";
+        }
+    }
+    @GetMapping("/getLightAutoStatus")
+    public String getLightAutoStatus() {
+        AutoStatus data=autoStatusMapper.getStatus();
+        System.out.println(data.getLightStatus());
+        if(data.getLightStatus()==1){
+            return "开";
+        }else{
+            return "关";
+        }
+    }
+    @GetMapping("/getFenAutoStatus")
+    public String getFenAutoStatus() {
+        AutoStatus data=autoStatusMapper.getStatus();
+        System.out.println(data.getFenStatus());
+        if(data.getFenStatus()==1){
+            return "开";
+        }else{
+            return "关";
+        }
+    }
+    @GetMapping("/weather")
+    public Result  getWeather() throws IOException {
+        Result rs=new Result();
+        //获取天气数据
+        List<Weather> weathers = weatherService.getWeather("101040700");
+        rs.setCode(200);
+        rs.setMsg("查询成功");
+        rs.setData(weathers);
+        return rs;
+    }
+ }

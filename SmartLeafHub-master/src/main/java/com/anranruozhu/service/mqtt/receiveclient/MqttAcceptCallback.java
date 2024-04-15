@@ -1,6 +1,8 @@
 package com.anranruozhu.service.mqtt.receiveclient;
 
 import com.anranruozhu.config.AutoConfig;
+import com.anranruozhu.entity.AutoStatus;
+import com.anranruozhu.mapper.AutoStatusMapper;
 import com.anranruozhu.service.DataAccess;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +19,7 @@ import java.io.UnsupportedEncodingException;
 @Data
 public class MqttAcceptCallback implements MqttCallbackExtended {
     @Autowired
-    private AutoConfig autoConfig;
+    AutoStatusMapper autoStatusMapper;
     @Autowired
     private MqttAcceptClient mqttAcceptClient;
     @Autowired
@@ -49,13 +51,14 @@ public class MqttAcceptCallback implements MqttCallbackExtended {
         log.info("【MQTT-消费端】接收消息Qos : " + mqttMessage.getQos());
         String s=new String(mqttMessage.getPayload());
         log.info("【MQTT-消费端】接收消息内容 : " + s);
+        AutoStatus autoStatus=autoStatusMapper.getStatus();
         if(topic.equals(TOPIC_A)){
-            log.info(String.valueOf(autoConfig.isFenAuto()));
-            log.info(String.valueOf(autoConfig.isPumpAuto()));
-            da.SaveSersor(s,autoConfig.isPumpAuto(),autoConfig.isFenAuto());
+            log.info(String.valueOf(autoStatus.getPumpStatus()));
+            log.info(String.valueOf(autoStatus.getFenStatus()));
+            da.SaveSersor(s,autoStatus.getPumpStatus(),autoStatus.getFenStatus());
         } else if (topic.equals(TOPIC_B)) {
-            log.info(String.valueOf(autoConfig.isLightAuto()));
-            da.SaveLight(s,autoConfig.isLightAuto());
+            log.info(String.valueOf(autoStatus.getLightStatus()));
+            da.SaveLight(s,autoStatus.getLightStatus());
         };
     }
     /**
