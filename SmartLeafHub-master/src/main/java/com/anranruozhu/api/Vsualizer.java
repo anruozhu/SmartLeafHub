@@ -4,10 +4,7 @@ import cn.hutool.json.JSONObject;
 import com.alibaba.fastjson.JSON;
 import com.anranruozhu.common.Result;
 import com.anranruozhu.entity.*;
-import com.anranruozhu.mapper.AlertDataMapper;
-import com.anranruozhu.mapper.AutoStatusMapper;
-import com.anranruozhu.mapper.DeviceStateMapper;
-import com.anranruozhu.mapper.LightInstrustionsMapper;
+import com.anranruozhu.mapper.*;
 import com.anranruozhu.service.DataAccess;
 import com.anranruozhu.service.MonitorService;
 import com.anranruozhu.service.WeatherService;
@@ -47,6 +44,12 @@ public class Vsualizer
     private DeviceStateMapper deviceStateMapper;
     @Autowired
     private LightInstrustionsMapper lightInstrustionsMapper;
+    @Autowired
+    private SoilDataMapper soilDataMapper;
+    @Autowired
+    private TemperstureDataMapper temperatureDataMapper;
+    @Autowired
+    private LightDataMapper lightDataMapper;
     //获取实时的温度
     @GetMapping("/show_all")
     public Result getTemperature(){
@@ -155,14 +158,68 @@ public class Vsualizer
         rs.setData(weathers);
         return rs;
     }
-    @GetMapping("/getAutoStatus")
-    public Result getAutoStatus() {
+    @GetMapping("/getTempAlert")
+    public Result getTempAlert() {
         Result rs =new Result();
+        JSONObject data=new JSONObject();
         try{
-           List<AlertData> ad=alertDataMapper.getAlertAll();
+           float td= temperatureDataMapper.ShowLast();
+           if(td<15){
+               data.set("message","当前温度过低，应关闭风扇");
+           }else if(td>30){
+               data.set("message","当前温度过高，应打开风扇");
+           }else{
+               data.set("message","当前温度正常");
+           }
            rs.setCode(200);
            rs.setMsg("查询成功");
-           rs.setData(ad);
+           rs.setData(data);
+        }catch (Exception e){
+            rs.setCode(500);
+            rs.setMsg("查询失败");
+            e.printStackTrace();
+        }
+        return rs;
+    }
+    @GetMapping("/getSoilAlert")
+    public Result getSoilAlert() {
+        Result rs =new Result();
+        JSONObject data=new JSONObject();
+        try{
+            float ad=soilDataMapper.ShowLast();
+            if(ad >70){
+                data.set("message","当前湿度过高，应关闭水泵");
+            }else if(ad<20){
+                data.set("message","当前湿度过低，应打开水泵");
+            }else{
+                data.set("message","当前湿度正常");
+            }
+            rs.setCode(200);
+            rs.setMsg("查询成功");
+            rs.setData(data);
+        }catch (Exception e){
+            rs.setCode(500);
+            rs.setMsg("查询失败");
+            e.printStackTrace();
+        }
+        return rs;
+    }
+    @GetMapping("/getLightAlert")
+    public Result getLightAlert() {
+        Result rs =new Result();
+        JSONObject data=new JSONObject();
+        try{
+            float ad=lightDataMapper.ShowLast();
+            if(ad<100){
+                data.set("message","当前光照过低，应打开灯光");
+            }else if(ad>200){
+                data.set("message","当前光照过高，应关闭灯光");
+            }else{
+                data.set("message","当前光照正常");
+            }
+            rs.setCode(200);
+            rs.setMsg("查询成功");
+            rs.setData(data);
         }catch (Exception e){
             rs.setCode(500);
             rs.setMsg("查询失败");

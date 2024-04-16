@@ -48,7 +48,7 @@ public class DataAccessImpl implements DataAccess {
         //数据
         Random random = new Random();
         JSONObject jsonObject = JSONUtil.parseObj(message);
-        float soilHumidity = jsonObject.getFloat("soil_humidity")*10+15 + (random.nextFloat() * 5);
+        float soilHumidity = jsonObject.getFloat("soil_humidity")*((float) 20 /6)+55 + random.nextInt((3 + 3) + 1) - 3;
         float airTemperature = jsonObject.getFloat("air_temperature");
         try {
             soilDataMapper.addData(soilHumidity);

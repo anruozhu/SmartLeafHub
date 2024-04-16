@@ -49,7 +49,7 @@ public class MqttController {
                               )  {
         Result rs=new Result();
         client1.connect();
-        String topic = "ctl-a-1";
+        String topic = "ctl-b-1";
         JSONObject data=new JSONObject().set("pump_ctrl_state",0)
                                         .set("pump_power_state",0)
                                         .set("fan_mode",f_mode)
@@ -69,7 +69,7 @@ public class MqttController {
     ) {
         Result rs=new Result();
         client1.connect();
-        String topic = "ctl-b-1";
+        String topic = "ctl-a-1";
         JSONObject data = new JSONObject()
                 .set("light_mode", light_mode)
                 .set("light_level", light_level);

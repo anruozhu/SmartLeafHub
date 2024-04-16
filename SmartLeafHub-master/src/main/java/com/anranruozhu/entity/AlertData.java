@@ -15,7 +15,7 @@ public class AlertData {
         // 预警类型 1:光照，2：土壤湿度，3：温度
     private int id;
     private int alertType;
-    private String alertData;
+    private float alertData;
     private String alertMessage;
     private Timestamp alertTime;
 }
