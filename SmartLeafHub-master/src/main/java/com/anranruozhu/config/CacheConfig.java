@@ -27,7 +27,7 @@ public class CacheConfig extends CachingConfigurerSupport {
         StringRedisTemplate template = new StringRedisTemplate(factory);
         //定义key序列化方式
         //Long类型会出现异常信息;需要我们上面的自定义key生成策略，一般没必要
-        //我们的代码里的key为用户的手机号
+        //我们的代码里的key为用户的手机号为string类型故不用
         //RedisSerializer<String> redisSerializer = new StringRedisSerializer();
         //定义value的序列化方式
         Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);

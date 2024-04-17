@@ -9,11 +9,9 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.springframework.stereotype.Component;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 /**
  * @author anranruozhu
  * @ClassName WeatherServiceImpl
@@ -23,7 +21,6 @@ import java.util.List;
 @Component
 public class WeatherServiceImpl implements WeatherService {
     private final String apiUrl = "http://t.weather.itboy.net/api/weather/city/";
-
     public List<Weather> getWeather(String cityCode) throws IOException {
         //HTTP请求 天气接口
         OkHttpClient client = new OkHttpClient();

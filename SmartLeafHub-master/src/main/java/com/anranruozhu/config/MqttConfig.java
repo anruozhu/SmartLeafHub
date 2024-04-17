@@ -1,4 +1,4 @@
-package com.anranruozhu.utils;
+package com.anranruozhu.config;
 
 import com.anranruozhu.service.mqtt.receiveclient.MqttAcceptClient;
 import org.springframework.beans.factory.annotation.Autowired;

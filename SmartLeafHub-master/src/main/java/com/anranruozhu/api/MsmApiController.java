@@ -39,7 +39,7 @@ public class MsmApiController {
             rs.setCode(200);
             //1、使用随机生成验证码的工具来生成随机验证码。
             String code = RandomUtil.getFourBitRandom();//生成验证码的随机值
-            //2.使用Map来进行code的存储映射，然后使得短发发送方法进行业务。
+            //2.使用Map来进行code的存储映射，然后使得短信发送方法进行业务。
             Map<String,Object> param = new HashMap<>();
             param.put("code", code);
             JSONObject json = new JSONObject();

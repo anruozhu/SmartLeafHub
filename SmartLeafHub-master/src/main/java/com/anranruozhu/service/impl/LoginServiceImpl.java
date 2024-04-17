@@ -6,7 +6,7 @@ import com.anranruozhu.entity.User;
 import com.anranruozhu.mapper.UserMapper;
 import com.anranruozhu.service.LoginService;
 import com.anranruozhu.utils.JwtUtil;
-import com.anranruozhu.utils.MD5;
+import com.anranruozhu.utils.MD5Util;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class LoginServiceImpl implements LoginService {
     Result result=new Result();
     @Override
     public Result login(String phone, String password) {
-        String encodedPwd = MD5.md5(password, phone);
+        String encodedPwd = MD5Util.md5(password, phone);
         User user= userMapper.login(phone, encodedPwd);
         JSONObject json = new JSONObject();
         Result result=new Result();
@@ -59,7 +59,7 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public Result UpdatePassword(String phone, String password) {
         Result res = new Result();
-        String encodedPwd = MD5.md5(password,phone);
+        String encodedPwd = MD5Util.md5(password,phone);
         try {
             userMapper.UpdatePassword(phone,encodedPwd);
         }catch (Exception e){

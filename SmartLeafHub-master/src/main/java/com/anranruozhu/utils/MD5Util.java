@@ -17,9 +17,9 @@ import java.security.NoSuchAlgorithmException;
 /**
  * MD5加密工具类
  */
-public class MD5 {
+public class MD5Util {
 
-    public static final Logger LOG = LoggerFactory.getLogger(MD5.class);
+    public static final Logger LOG = LoggerFactory.getLogger(MD5Util.class);
 
     /**
      * 16进制字符集
@@ -32,7 +32,7 @@ public class MD5 {
     /**
      * 加盐参数
      */
-    public final static String HASH_ALGORITHM_NAME = "MD5";
+    public final static String HASH_ALGORITHM_NAME = "MD5Util";
     /**
      * 指定算法为MD5的MessageDigest
      */
@@ -41,7 +41,7 @@ public class MD5 {
     /** 初始化messageDigest的加密算法为MD5 */
     static {
         try {
-            MESSAGE_DIGEST = MessageDigest.getInstance("MD5");
+            MESSAGE_DIGEST = MessageDigest.getInstance("MD5Util");
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
         }
@@ -156,7 +156,7 @@ public class MD5 {
     public static String md5(String credentials, String salt) {
         MessageDigest messageDigest = null;
         try {
-            messageDigest = MessageDigest.getInstance("MD5");
+            messageDigest = MessageDigest.getInstance("MD5Util");
             messageDigest.reset();
             //先加盐
             messageDigest.update(salt.getBytes("UTF-8"));

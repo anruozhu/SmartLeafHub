@@ -1,11 +1,9 @@
-package com.anranruozhu.utils;
+package com.anranruozhu.config;
 
+import com.anranruozhu.utils.JwtUtil;
 import com.auth0.jwt.interfaces.Claim;
 import lombok.extern.slf4j.Slf4j;
 import com.auth0.jwt.JWT;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;

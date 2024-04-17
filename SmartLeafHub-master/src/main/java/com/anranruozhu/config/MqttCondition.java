@@ -1,4 +1,4 @@
-package com.anranruozhu.utils;
+package com.anranruozhu.config;
 
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.annotation.Condition;

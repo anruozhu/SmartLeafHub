@@ -35,7 +35,6 @@ public class DataAccessImpl implements DataAccess {
     private TemperstureDataMapper temperstureDataMapper;
     @Autowired
     private LightDataMapper lightDataMapper;
-
     @Autowired
     private DeviceStateMapper deviceStateMapper;
     @Autowired
@@ -63,7 +62,6 @@ public class DataAccessImpl implements DataAccess {
         log.info("土壤湿度为：{}", soilHumidity);
         log.info("气温为：{}", airTemperature);
     }
-
     @Override
     public void SaveLight(String message,int lightAuto) {
         JSONObject jsonObject = JSONUtil.parseObj(message);
@@ -77,7 +75,6 @@ public class DataAccessImpl implements DataAccess {
         }
         log.info("光照强度为：{}", lightIntensity);
     }
-
     @Override
     public void SaveDeviceState(int pumpCtrlState, int pumpPowerState, int fanMode, int fanLevel) {
         try {
@@ -88,7 +85,6 @@ public class DataAccessImpl implements DataAccess {
         }
         log.info("devicedata 保存成功");
     }
-
     @Override
     public void SaveInstructions(int lightMode, int lightLevel) {
         try {
@@ -111,7 +107,6 @@ public class DataAccessImpl implements DataAccess {
         }
         return res;
     }
-
     @Override
     public LightInstrustions getLightState() {
         LightInstrustions res = new LightInstrustions();
@@ -123,7 +118,6 @@ public class DataAccessImpl implements DataAccess {
         }
         return res;
     }
-
     public Result getDeviceAndLightState() {
         Result res = new Result();
         DeviceState device = getDeviceState();
@@ -143,7 +137,6 @@ public class DataAccessImpl implements DataAccess {
         res.setMsg("获取成功");
         return res;
     }
-
     @Override
     public Result getLightInstrustions() {
         Result rs=new Result();
@@ -165,7 +158,6 @@ public class DataAccessImpl implements DataAccess {
         }
         return rs;
     }
-
     @Override
     public Result getPumpStatus() {
         Result rs=new Result();
@@ -187,7 +179,6 @@ public class DataAccessImpl implements DataAccess {
         }
         return rs;
     }
-
     @Override
     public Result getFanStatus() {
         Result rs=new Result();

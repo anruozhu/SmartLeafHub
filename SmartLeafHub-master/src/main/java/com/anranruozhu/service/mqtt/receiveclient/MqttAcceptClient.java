@@ -1,18 +1,13 @@
 package com.anranruozhu.service.mqtt.receiveclient;
 
-import cn.hutool.core.date.DateUtil;
-import com.anranruozhu.utils.MqttProperties;
+import com.anranruozhu.config.MqttProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.Date;
 
 @Slf4j
 @Component
