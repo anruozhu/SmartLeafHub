@@ -49,7 +49,6 @@ public class AuthController {
         if(ri.getCode().equals(code)){
             //验证码验证注册后删除对应值
             redisTemplate.delete(ri.getPhoneNumber());
-
             return registerService.register(ri.getPhoneNumber(),ri.getPassword());
         }else{
             return rs;

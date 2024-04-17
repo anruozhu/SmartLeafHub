@@ -3,7 +3,9 @@ package com.anranruozhu.api;
 import cn.hutool.json.JSONObject;
 import com.anranruozhu.common.Result;
 import com.anranruozhu.entity.AutoStatus;
+import com.anranruozhu.entity.DeviceState;
 import com.anranruozhu.mapper.AutoStatusMapper;
+import com.anranruozhu.mapper.DeviceStateMapper;
 import com.anranruozhu.service.DataAccess;
 import com.anranruozhu.service.mqtt.sendclient.MqttSendClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,18 +24,20 @@ public class MqttController {
     @Qualifier("autoStatusMapper")
     @Autowired
     private AutoStatusMapper autoStatusMapper;
-
+    @Autowired
+    private DeviceStateMapper deviceStateMapper;
     @GetMapping("/Pumpctl")
     public Result pumpctl(@RequestParam int p_c_state){
         Result rs=new Result();
         client1.connect();
-        String topic = "ctl-a-1";
+        String topic = "ctl-b-1";
+        DeviceState ds=deviceStateMapper.ShowLast();
         JSONObject data=new JSONObject().set("pump_ctrl_state",p_c_state)
                 .set("pump_power_state",p_c_state)
-                .set("fan_mode",0)
-                .set("fan_level",0);
+                .set("fan_mode",ds.getFanMode())
+                .set("fan_level",ds.getFanLevel());
         client1.publish(topic, String.valueOf(data));
-        dataAccess.SaveDeviceState(p_c_state, p_c_state, 0, 0);
+        dataAccess.SaveDeviceState(p_c_state, p_c_state, ds.getFanMode(), ds.getFanLevel());
         client1.disconnect();
         client1.close();
         rs.setCode(200);
@@ -41,21 +45,21 @@ public class MqttController {
         rs.setData(new JSONObject().set("pump_ctrl_state",p_c_state));
         return rs;
     }
-
     @GetMapping("/Windctl")
     public Object windctl(
                            @RequestParam int f_mode,
                            @RequestParam int f_level
                               )  {
         Result rs=new Result();
+        DeviceState ds=deviceStateMapper.ShowLast();
         client1.connect();
         String topic = "ctl-b-1";
-        JSONObject data=new JSONObject().set("pump_ctrl_state",0)
-                                        .set("pump_power_state",0)
+        JSONObject data=new JSONObject().set("pump_ctrl_state",ds.getPumpCtrlState())
+                                        .set("pump_power_state",ds.getPumpPowerState())
                                         .set("fan_mode",f_mode)
                                         .set("fan_level",f_level);
         client1.publish(topic, String.valueOf(data));
-        dataAccess.SaveDeviceState(0, 0, f_mode, f_level);
+        dataAccess.SaveDeviceState(ds.getPumpCtrlState(), ds.getPumpPowerState(), f_mode, f_level);
         client1.disconnect();
         client1.close();
         rs.setCode(200);
@@ -83,18 +87,14 @@ public class MqttController {
                 .set("light_level", light_level));
         return rs;
     }
-
-
     @GetMapping("/get_device_state")
     public Result getDeviceState(){
         return dataAccess.getDeviceAndLightState();
     }
-
     @GetMapping("/getLightStatus")
     public Result getLightStatus() {
         return dataAccess.getLightInstrustions();
     }
-
     @GetMapping("/getPumpStatus")
     public Result getPumpStatus() {
         return dataAccess.getPumpStatus();

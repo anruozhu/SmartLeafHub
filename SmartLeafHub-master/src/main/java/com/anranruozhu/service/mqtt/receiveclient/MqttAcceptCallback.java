@@ -52,8 +52,8 @@ public class MqttAcceptCallback implements MqttCallbackExtended {
         log.info("【MQTT-消费端】接收消息内容 : " + s);
         AutoStatus autoStatus=autoStatusMapper.getStatus();
         if(topic.equals(TOPIC_A)){
-            log.info(String.valueOf(autoStatus.getPumpStatus()));
-            log.info(String.valueOf(autoStatus.getFenStatus()));
+            log.info("水泵自动化状态{}", autoStatus.getPumpStatus());
+            log.info("风扇自动化状态{}", autoStatus.getFenStatus());
             da.SaveSersor(s,autoStatus.getPumpStatus(),autoStatus.getFenStatus());
         } else if (topic.equals(TOPIC_B)) {
             log.info(String.valueOf(autoStatus.getLightStatus()));

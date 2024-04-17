@@ -12,7 +12,6 @@ import com.anranruozhu.service.mqtt.sendclient.MqttSendClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import java.util.Random;
 
 /**
@@ -53,12 +52,14 @@ public class DataAccessImpl implements DataAccess {
         try {
             soilDataMapper.addData(soilHumidity);
             temperstureDataMapper.addData(airTemperature);
-            TemperatureIsNormal(airTemperature,temperAotu);
-            soilHumidityIsNormal(soilHumidity,soilAuto);
+
         }catch (Exception e){
             log.error("error: " + e.getMessage());
             throw new RuntimeException("湿度气温保存失败");
         }
+        TemperatureIsNormal(airTemperature,temperAotu);
+        log.info("湿度自动化{}", soilAuto);
+        soilHumidityIsNormal(soilHumidity,soilAuto);
         log.info("土壤湿度为：{}", soilHumidity);
         log.info("气温为：{}", airTemperature);
     }
@@ -218,7 +219,7 @@ public class DataAccessImpl implements DataAccess {
         }
     }
     public void soilHumidityIsNormal(float soilHumidity,int soilAuto){
-        if(soilHumidity<20||soilHumidity>80) {
+        if(soilHumidity<60||soilHumidity>80) {
             soilHumidityAuto(soilHumidity,soilAuto);
             alertDataMapper.AlertNew(2, "当前土壤湿度异常", soilHumidity);
         }
@@ -235,53 +236,61 @@ public class DataAccessImpl implements DataAccess {
 
     public void soilHumidityAuto(float soilHumidity,int soilAuto){
         if(soilAuto==1){
+            log.info("湿度自动化");
             client1.connect();
-            String topic = "ctl-a-1";
+            String topic = "ctl-b-1";
+            DeviceState ds=deviceStateMapper.ShowLast();
             JSONObject data=new JSONObject();
-            if(soilHumidity<26){
+            if(soilHumidity<60){
+                log.info("土壤湿度过低，自动打开水泵");
                 data.set("pump_ctrl_state",1)
                         .set("pump_power_state",1)
-                        .set("fan_mode",0)
-                        .set("fan_level",0);
+                        .set("fan_mode",ds.getFanMode())
+                        .set("fan_level",ds.getFanLevel());
                 client1.publish(topic, String.valueOf(data));
-                dataAccess.SaveDeviceState(1, 1, 0, 0);
+                dataAccess.SaveDeviceState(1, 1, ds.getFanMode(), ds.getFanLevel());
             }else if(soilHumidity>80){
+                log.info("土壤湿度过高，自动关闭水泵");
                 data.set("pump_ctrl_state",0)
                         .set("pump_power_state",0)
-                        .set("fan_mode",0)
-                        .set("fan_level",0);
+                        .set("fan_mode",ds.getFanMode())
+                        .set("fan_level",ds.getFanLevel());
                 client1.publish(topic, String.valueOf(data));
-                dataAccess.SaveDeviceState(0, 0, 0, 0);
+                dataAccess.SaveDeviceState(0, 0, ds.getFanMode(), ds.getFanLevel());
             }
             client1.disconnect();
             client1.close();
         }else{
             //不开起自动化
-            log.info("自动控制已关闭");
+            log.info("自动控制关闭");
         }
     }
     public void temperatureAuto(float temperature,int temperAotu){
         if(temperAotu==1){
+            DeviceState ds=deviceStateMapper.ShowLast();
             client1.connect();
-            String topic = "ctl-a-1";
+            String topic = "ctl-b-1";
             JSONObject data=new JSONObject();
             if(temperature>30){
-                data.set("pump_ctrl_state",0)
-                        .set("pump_power_state",0)
+                log.info("温度过高，自动打开风扇");
+                data.set("pump_ctrl_state",ds.getPumpCtrlState())
+                        .set("pump_power_state",ds.getPumpPowerState())
                         .set("fan_mode",1)
                         .set("fan_level",50);
                 client1.publish(topic, String.valueOf(data));
-                dataAccess.SaveDeviceState(0, 0, 1, 50);
-            }else if(temperature<20){
-                data.set("pump_ctrl_state",0)
-                        .set("pump_power_state",0)
+                dataAccess.SaveDeviceState(ds.getPumpCtrlState(), ds.getPumpPowerState(), 1, 50);
+            }else if(temperature<=20){
+                log.info("温度过低，自动关闭风扇");
+                data.set("pump_ctrl_state",ds.getPumpCtrlState())
+                        .set("pump_power_state",ds.getPumpPowerState())
                         .set("fan_mode",0)
                         .set("fan_level",0);
                 client1.publish(topic, String.valueOf(data));
-                dataAccess.SaveDeviceState(0, 0, 0, 0);
+                dataAccess.SaveDeviceState(ds.getPumpCtrlState(), ds.getPumpPowerState(), 0, 0);
             }
             client1.disconnect();
             client1.close();
+            log.info("温度自动化调节结束");
         }else{
             //不开起自动化
             log.info("温度自动控制已关闭");
@@ -291,14 +300,16 @@ public class DataAccessImpl implements DataAccess {
     public void lightIntensityAuto(float lightIntensity,int lightAuto){
         if(lightAuto==1){
             client1.connect();
-            String topic = "ctl-b-1";
+            String topic = "ctl-a-1";
             JSONObject data=new JSONObject();
             if(lightIntensity>400){
+                log.info("光照过低，自动打开灯光");
                 data.set("light_mode", 1)
                         .set("light_level", lightIntensity/17);
                 client1.publish(topic, String.valueOf(data));
                 dataAccess.SaveInstructions(1, (int) (lightIntensity/17));
             }else if(lightIntensity<200){
+                log.info("光照过高，自动关闭灯光");
                 data.set("light_mode", 0)
                         .set("light_level", 0);
                 client1.publish(topic, String.valueOf(data));
