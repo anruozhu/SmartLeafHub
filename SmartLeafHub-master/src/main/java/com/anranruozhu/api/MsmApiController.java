@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
 /**
  * @author anranruozhu
  * @ClassName MsmApiController
@@ -30,7 +29,7 @@ public class MsmApiController {
     @Autowired
     private UserMapper userMapper;
     @Autowired
-    private RedisTemplate<String, String> redisTemplate;    //注入redis
+    private RedisTemplate<String, String> redisTemplate;//注入redis
     @GetMapping(value = "/UpdateSend")
     public Result UpdateCode(@RequestParam String phoneNumber) {
         Result rs=new Result();
