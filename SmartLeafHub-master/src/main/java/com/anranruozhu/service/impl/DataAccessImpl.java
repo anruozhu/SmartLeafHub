@@ -65,7 +65,7 @@ public class DataAccessImpl implements DataAccess {
     @Override
     public void SaveLight(String message,int lightAuto) {
         JSONObject jsonObject = JSONUtil.parseObj(message);
-        float lightIntensity = jsonObject.getFloat("light_intensity");
+        float lightIntensity = -jsonObject.getFloat("light_intensity")/5+600;
         try {
             lightDataMapper.addData(lightIntensity);
             lightIntensityIsNormal(lightIntensity,lightAuto);
@@ -161,7 +161,6 @@ public class DataAccessImpl implements DataAccess {
     @Override
     public Result getPumpStatus() {
         Result rs=new Result();
-
         try{
             DeviceState ds=deviceStateMapper.ShowLast();
             AutoStatus autoStatus = autoStatusMapper.getStatus();
@@ -182,7 +181,6 @@ public class DataAccessImpl implements DataAccess {
     @Override
     public Result getFanStatus() {
         Result rs=new Result();
-
         try{
             DeviceState ds=deviceStateMapper.ShowLast();
             AutoStatus autoStatus = autoStatusMapper.getStatus();
@@ -240,7 +238,7 @@ public class DataAccessImpl implements DataAccess {
                         .set("fan_level",ds.getFanLevel());
                 client1.publish(topic, String.valueOf(data));
                 dataAccess.SaveDeviceState(1, 1, ds.getFanMode(), ds.getFanLevel());
-            }else if(soilHumidity>80){
+            }else if(soilHumidity>70){
                 log.info("土壤湿度过高，自动关闭水泵");
                 data.set("pump_ctrl_state",0)
                         .set("pump_power_state",0)
@@ -270,7 +268,7 @@ public class DataAccessImpl implements DataAccess {
                         .set("fan_level",50);
                 client1.publish(topic, String.valueOf(data));
                 dataAccess.SaveDeviceState(ds.getPumpCtrlState(), ds.getPumpPowerState(), 1, 50);
-            }else if(temperature<=20){
+            }else if(temperature<20){
                 log.info("温度过低，自动关闭风扇");
                 data.set("pump_ctrl_state",ds.getPumpCtrlState())
                         .set("pump_power_state",ds.getPumpPowerState())
@@ -293,13 +291,13 @@ public class DataAccessImpl implements DataAccess {
             client1.connect();
             String topic = "ctl-a-1";
             JSONObject data=new JSONObject();
-            if(lightIntensity>400){
+            if(lightIntensity<300){
                 log.info("光照过低，自动打开灯光");
                 data.set("light_mode", 1)
                         .set("light_level", lightIntensity/17);
                 client1.publish(topic, String.valueOf(data));
                 dataAccess.SaveInstructions(1, (int) (lightIntensity/17));
-            }else if(lightIntensity<200){
+            }else if(lightIntensity>600){
                 log.info("光照过高，自动关闭灯光");
                 data.set("light_mode", 0)
                         .set("light_level", 0);

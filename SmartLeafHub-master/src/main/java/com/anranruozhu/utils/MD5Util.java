@@ -18,9 +18,7 @@ import java.security.NoSuchAlgorithmException;
  * MD5加密工具类
  */
 public class MD5Util {
-
     public static final Logger LOG = LoggerFactory.getLogger(MD5Util.class);
-
     /**
      * 16进制字符集
      */
@@ -37,7 +35,6 @@ public class MD5Util {
      * 指定算法为MD5的MessageDigest
      */
     private static MessageDigest MESSAGE_DIGEST = null;
-
     /** 初始化messageDigest的加密算法为MD5 */
     static {
         try {
@@ -46,33 +43,28 @@ public class MD5Util {
             LOG.error(e.getMessage(), e);
         }
     }
-
     /**
      * * MD5加密字符串
      *
      * @param str 目标字符串
      * @return MD5加密后的字符串
      */
-
     public static String getMD5String(String str) {
         if (Strings.isNullOrEmpty(str)) {
             return null;
         }
         return getMD5String(str.getBytes());
     }
-
     /**
      * * MD5加密以byte数组表示的字符串
      *
      * @param bytes 目标byte数组
      * @return MD5加密后的字符串
      */
-
     public static String getMD5String(byte[] bytes) {
         MESSAGE_DIGEST.update(bytes);
         return bytesToHex(MESSAGE_DIGEST.digest());
     }
-
     /**
      * 获取文件的MD5值
      *
@@ -97,7 +89,6 @@ public class MD5Util {
         }
         return ret;
     }
-
     /**
      * * 获取文件的MD5值
      *
@@ -107,8 +98,6 @@ public class MD5Util {
     public static String getFileMD5String(String fileName) {
         return getFileMD5String(new File(fileName));
     }
-
-
     /**
      * * 将字节数组转换成16进制字符串
      *
@@ -118,7 +107,6 @@ public class MD5Util {
     public static String bytesToHex(byte[] bytes) {
         return bytesToHex(bytes, 0, bytes.length);
     }
-
     /**
      * * 将字节数组中指定区间的子数组转换成16进制字符串
      *
@@ -144,8 +132,6 @@ public class MD5Util {
     public static String byteToHex(byte bt) {
         return HEX_DIGITS[(bt & 0xf0) >> 4] + "" + HEX_DIGITS[bt & 0xf];
     }
-
-
     /**
      * shiro密码加密工具类
      *
@@ -167,9 +153,7 @@ public class MD5Util {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-
         byte[] byteArray = messageDigest.digest();
-
         StringBuffer md5StrBuff = new StringBuffer();
         for (int i = 0; i < byteArray.length; i++) {
             if (Integer.toHexString(0xFF & byteArray[i]).length() == 1) {
@@ -178,7 +162,6 @@ public class MD5Util {
                 md5StrBuff.append(Integer.toHexString(0xFF & byteArray[i]));
             }
         }
-
         return md5StrBuff.toString();
     }
 }

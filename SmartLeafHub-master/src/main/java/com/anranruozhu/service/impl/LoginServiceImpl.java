@@ -29,7 +29,8 @@ public class LoginServiceImpl implements LoginService {
     public Result login(String phone, String password) {
         String encodedPwd = MD5Util.md5(password, phone);
         User user= userMapper.login(phone, encodedPwd);
-        JSONObject json = new JSONObject();
+        new JSONObject();
+        JSONObject json;
         Result result=new Result();
         if (user!=null) {
             log.info("登录成功！生成token！");
