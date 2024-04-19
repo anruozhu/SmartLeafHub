@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author anranruozhu
- * @ClassName registerInfo
+ * @ClassName RegisterInfo
  * @Description 注册信息类
  * @create 2024/4/8 下午4:30
  **/
@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @ApiModel
-public class registerInfo {
+public class RegisterInfo {
     @ApiModelProperty(value = "用户手机号")
     String phoneNumber;
     @ApiModelProperty(value = "用户密码")

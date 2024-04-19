@@ -1,7 +1,6 @@
 package com.anranruozhu.mapper;
 
-import com.anranruozhu.entity.LightIntensityData;
-import com.anranruozhu.entity.soilData;
+import com.anranruozhu.entity.SoilData;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -13,6 +12,6 @@ public interface SoilDataMapper {
         //获取最新得到数据
         Float ShowLast();
         //获取历史数据
-        List<soilData> ShowAll();
-        List<soilData> ShowWeekData();
+        List<SoilData> ShowAll();
+        List<SoilData> ShowWeekData();
 }

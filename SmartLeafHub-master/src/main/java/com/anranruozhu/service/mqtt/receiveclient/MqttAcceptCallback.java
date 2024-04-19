@@ -1,5 +1,7 @@
 package com.anranruozhu.service.mqtt.receiveclient;
 
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.anranruozhu.entity.AutoStatus;
 import com.anranruozhu.mapper.AutoStatusMapper;
 import com.anranruozhu.service.DataAccess;
@@ -12,7 +14,6 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.io.UnsupportedEncodingException;
-
 @Slf4j
 @Component
 @Data
@@ -23,8 +24,8 @@ public class MqttAcceptCallback implements MqttCallbackExtended {
     private MqttAcceptClient mqttAcceptClient;
     @Autowired
     private DataAccess da;
-    private static final String TOPIC_A = "tobacco_01_a";
-    private static final String TOPIC_B = "tobacco_01_b";
+    private static final String TOPIC_A = "tobacco_01";
+//    private static final String TOPIC_B = "tobacco_01_b";
 
     /**
      * 客户端断开后触发
@@ -51,14 +52,25 @@ public class MqttAcceptCallback implements MqttCallbackExtended {
         String s=new String(mqttMessage.getPayload());
         log.info("【MQTT-消费端】接收消息内容 : " + s);
         AutoStatus autoStatus=autoStatusMapper.getStatus();
-        if(topic.equals(TOPIC_A)){
+        JSONObject jsonObject = JSONUtil.parseObj(s);
+        int title =jsonObject.getInt("title");
+        log.info("title:{}",title);
+        if(title==1){
+            log.info(String.valueOf(autoStatus.getLightStatus()));
+            da.SaveLight(s,autoStatus.getLightStatus());
+        }else{
             log.info("水泵自动化状态{}", autoStatus.getPumpStatus());
             log.info("风扇自动化状态{}", autoStatus.getFenStatus());
             da.SaveSersor(s,autoStatus.getPumpStatus(),autoStatus.getFenStatus());
-        } else if (topic.equals(TOPIC_B)) {
-            log.info(String.valueOf(autoStatus.getLightStatus()));
-            da.SaveLight(s,autoStatus.getLightStatus());
-        };
+        }
+//        if(topic.equals(TOPIC_A)){
+//            log.info("水泵自动化状态{}", autoStatus.getPumpStatus());
+//            log.info("风扇自动化状态{}", autoStatus.getFenStatus());
+//            da.SaveSersor(s,autoStatus.getPumpStatus(),autoStatus.getFenStatus());
+//        } else if (topic.equals(TOPIC_B)) {
+//            log.info(String.valueOf(autoStatus.getLightStatus()));
+//            da.SaveLight(s,autoStatus.getLightStatus());
+//        };
     }
     /**
      * 发布消息成功
@@ -96,6 +108,6 @@ public class MqttAcceptCallback implements MqttCallbackExtended {
         // 以/#结尾表示订阅所有以test开头的主题
         // 订阅所有机构主题
         mqttAcceptClient.subscribe(TOPIC_A, 0);
-        mqttAcceptClient.subscribe( TOPIC_B, 0);
+        //mqttAcceptClient.subscribe( TOPIC_B, 0);
     }
 }

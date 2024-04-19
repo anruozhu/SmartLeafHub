@@ -2,8 +2,7 @@ package com.anranruozhu.api;
 
 import com.anranruozhu.common.Result;
 import com.anranruozhu.entity.User;
-import com.anranruozhu.entity.registerInfo;
-import com.anranruozhu.mapper.AlertDataMapper;
+import com.anranruozhu.entity.RegisterInfo;
 import com.anranruozhu.service.LoginService;
 import com.anranruozhu.service.RegisterService;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +35,7 @@ public class AuthController {
     }
     // 注册接口
     @PostMapping("/register")
-    public Result register(@RequestBody registerInfo ri) {
+    public Result register(@RequestBody RegisterInfo ri) {
         // 处理注册逻辑
         // 返回注册结果
         //1、从redis中获取验证码，如果获取到就直接返回

@@ -13,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.util.Random;
-
 /**
  * @author anranruozhu
  * @ClassName DataAccessImpl
@@ -46,18 +45,16 @@ public class DataAccessImpl implements DataAccess {
         //数据
         Random random = new Random();
         JSONObject jsonObject = JSONUtil.parseObj(message);
-        float soilHumidity = jsonObject.getFloat("soil_humidity")*((float) 20 /6)+55 + random.nextInt((3 + 3) + 1) - 3;
+        float soilHumidity = jsonObject.getFloat("soil_humidity")*4;
         float airTemperature = jsonObject.getFloat("air_temperature");
         try {
             soilDataMapper.addData(soilHumidity);
             temperstureDataMapper.addData(airTemperature);
-
         }catch (Exception e){
             log.error("error: " + e.getMessage());
             throw new RuntimeException("湿度气温保存失败");
         }
         TemperatureIsNormal(airTemperature,temperAotu);
-        log.info("湿度自动化{}", soilAuto);
         soilHumidityIsNormal(soilHumidity,soilAuto);
         log.info("土壤湿度为：{}", soilHumidity);
         log.info("气温为：{}", airTemperature);
@@ -65,7 +62,8 @@ public class DataAccessImpl implements DataAccess {
     @Override
     public void SaveLight(String message,int lightAuto) {
         JSONObject jsonObject = JSONUtil.parseObj(message);
-        float lightIntensity = -jsonObject.getFloat("light_intensity")/5+600;
+        float lightIntensity = -(jsonObject.getFloat("light_intensity"))/5+600;
+        log.info("光照强度为：{}", lightIntensity);
         try {
             lightDataMapper.addData(lightIntensity);
             lightIntensityIsNormal(lightIntensity,lightAuto);
@@ -95,7 +93,6 @@ public class DataAccessImpl implements DataAccess {
         }
         log.info("lightInstruction 保存成功");
     }
-
     @Override
     public DeviceState getDeviceState() {
         DeviceState res = new DeviceState();
@@ -202,22 +199,22 @@ public class DataAccessImpl implements DataAccess {
         if(temperature>30){
             temperatureAuto(temperature,temperAotu);
             alertDataMapper.AlertNew(3,"当前温度过高",temperature);
-        }else if(temperature<10){
+        }else if(temperature<20){
             temperatureAuto(temperature,temperAotu);
             alertDataMapper.AlertNew(3,"当前温度过低",temperature);
         }
     }
     public void soilHumidityIsNormal(float soilHumidity,int soilAuto){
-        if(soilHumidity<60||soilHumidity>80) {
+        if(soilHumidity<60||soilHumidity>70) {
             soilHumidityAuto(soilHumidity,soilAuto);
             alertDataMapper.AlertNew(2, "当前土壤湿度异常", soilHumidity);
         }
     }
     public void lightIntensityIsNormal(float lightIntensity,int lightAuto){
-        if(lightIntensity>400){
+        if(lightIntensity<600){
             lightIntensityAuto(lightIntensity,lightAuto);
             alertDataMapper.AlertNew(1,"当前光照强度过低",lightIntensity);
-        }else if(lightIntensity<100){
+        }else if(lightIntensity>300){
             lightIntensityAuto(lightIntensity,lightAuto);
             alertDataMapper.AlertNew(1,"当前光照强度过高",lightIntensity);
         }
@@ -268,7 +265,7 @@ public class DataAccessImpl implements DataAccess {
                         .set("fan_level",50);
                 client1.publish(topic, String.valueOf(data));
                 dataAccess.SaveDeviceState(ds.getPumpCtrlState(), ds.getPumpPowerState(), 1, 50);
-            }else if(temperature<20){
+            }else if(temperature<24){
                 log.info("温度过低，自动关闭风扇");
                 data.set("pump_ctrl_state",ds.getPumpCtrlState())
                         .set("pump_power_state",ds.getPumpPowerState())

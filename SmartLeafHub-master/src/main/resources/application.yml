@@ -34,7 +34,7 @@ token:
 mqtt:
   hostUrl: tcp://localhost:1883
   username: admin
-  password: public
+  password: 12345xyz
   client-id: mqtt_test001
   cleanSession: true
   reconnect: true

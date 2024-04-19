@@ -32,6 +32,11 @@ public class MqttController {
         client1.connect();
         String topic = "ctl-b-1";
         DeviceState ds=deviceStateMapper.ShowLast();
+        AutoStatus data1=autoStatusMapper.getStatus();
+        if(data1.getPumpStatus()==1){
+            data1.setPumpStatus(0);
+            autoStatusMapper.addStatus(data1.getLightStatus(), data1.getPumpStatus(), data1.getFenStatus());
+        }
         JSONObject data=new JSONObject().set("pump_ctrl_state",p_c_state)
                 .set("pump_power_state",p_c_state)
                 .set("fan_mode",ds.getFanMode())
@@ -54,6 +59,11 @@ public class MqttController {
         DeviceState ds=deviceStateMapper.ShowLast();
         client1.connect();
         String topic = "ctl-b-1";
+        AutoStatus data1=autoStatusMapper.getStatus();
+        if(data1.getFenStatus()==1){
+            data1.setFenStatus(0);
+            autoStatusMapper.addStatus(data1.getLightStatus(), data1.getPumpStatus(), data1.getFenStatus());
+        }
         JSONObject data=new JSONObject().set("pump_ctrl_state",ds.getPumpCtrlState())
                                         .set("pump_power_state",ds.getPumpPowerState())
                                         .set("fan_mode",f_mode)
@@ -69,11 +79,16 @@ public class MqttController {
     }
     @GetMapping("/lightctl")
     public Result lightctl(@RequestParam int light_mode,
-                            @RequestParam int light_level
+                           @RequestParam int light_level
     ) {
         Result rs=new Result();
         client1.connect();
         String topic = "ctl-a-1";
+        AutoStatus data1=autoStatusMapper.getStatus();
+        if(data1.getLightStatus()==1){
+            data1.setLightStatus(0);
+            autoStatusMapper.addStatus(data1.getLightStatus(), data1.getPumpStatus(), data1.getFenStatus());
+        }
         JSONObject data = new JSONObject()
                 .set("light_mode", light_mode)
                 .set("light_level", light_level);

@@ -4,7 +4,7 @@ import com.anranruozhu.common.Result;
 import com.anranruozhu.mapper.UserInfoMapper;
 import com.anranruozhu.mapper.UserMapper;
 import com.anranruozhu.service.RegisterService;
-import com.anranruozhu.utils.MD5Util;
+import com.anranruozhu.utils.MD5;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class RegisterServiceImpl implements RegisterService {
     @Override
     public Result register(String phoneNumber, String password) {
         Result result=new Result();
-        String pwd = MD5Util.md5(password, phoneNumber);
+        String pwd = MD5.md5(password, phoneNumber);
         try {
             userMapper.register(phoneNumber,pwd);
         }catch(Exception e){

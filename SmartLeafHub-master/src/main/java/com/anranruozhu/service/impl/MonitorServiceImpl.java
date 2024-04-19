@@ -4,8 +4,8 @@ import cn.hutool.json.JSONObject;
 import com.anranruozhu.common.Result;
 import com.anranruozhu.entity.AlertData;
 import com.anranruozhu.entity.LightIntensityData;
+import com.anranruozhu.entity.SoilData;
 import com.anranruozhu.entity.TemperatureData;
-import com.anranruozhu.entity.soilData;
 import com.anranruozhu.mapper.AlertDataMapper;
 import com.anranruozhu.mapper.LightDataMapper;
 import com.anranruozhu.mapper.SoilDataMapper;
@@ -125,7 +125,7 @@ public class MonitorServiceImpl implements MonitorService {
     public Result getAllHumidity() {
         Result rs = new Result();
         try {
-            List<soilData> data = soilDataMapper.ShowAll();
+            List<SoilData> data = soilDataMapper.ShowAll();
             rs.setCode(200);
             rs.setMsg("获取成功");
             rs.setData(data);
@@ -162,13 +162,13 @@ public class MonitorServiceImpl implements MonitorService {
 
     @Override
     public Result getMathHumidity() {
-        List<soilData> datas=soilDataMapper.ShowAll();
+        List<SoilData> datas=soilDataMapper.ShowAll();
         Result rs=new Result();
         int n=datas.size();
         float total=0;
         float max=0;
         float min=1000;
-        for(soilData data:datas){
+        for(SoilData data:datas){
             total+=data.getSoilHumidity();
             if(data.getSoilHumidity()>max){
                 max=data.getSoilHumidity();
@@ -219,7 +219,7 @@ public class MonitorServiceImpl implements MonitorService {
     @Override
     public Result getWeekHumidity() {
         Result rs=new Result();
-        List<soilData> data=new ArrayList<>();
+        List<SoilData> data=new ArrayList<>();
         try{
             data=soilDataMapper.ShowWeekData();
             rs.setCode(200);

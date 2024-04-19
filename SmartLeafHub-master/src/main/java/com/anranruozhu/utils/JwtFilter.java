@@ -1,6 +1,5 @@
-package com.anranruozhu.config;
+package com.anranruozhu.utils;
 
-import com.anranruozhu.utils.JwtUtil;
 import com.auth0.jwt.interfaces.Claim;
 import lombok.extern.slf4j.Slf4j;
 import com.auth0.jwt.JWT;
@@ -46,17 +45,11 @@ public class JwtFilter implements Filter {
             // token 超时判断
             Date expireTime = JWT.decode(token).getExpiresAt();
             Date currentTime = new Date(System.currentTimeMillis());
-//            if ( currentTime.before(expireTime)){
-//                response.setStatus(401);
-//                response.getWriter().write("token 过期时间："+ expireTime);
-//                return;
-//            }
             if ( currentTime.after(expireTime)){
                 response.setStatus(401);
                 response.getWriter().write("token 已过期, 过期时间为："+ expireTime);
                 return;
             }
-
             Map<String, Claim> userData = JwtUtil.verifyToken(token);
             if (userData == null) {
                 response.getWriter().write("token不合法！");

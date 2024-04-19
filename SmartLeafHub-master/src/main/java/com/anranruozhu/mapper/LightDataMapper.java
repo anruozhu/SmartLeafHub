@@ -1,7 +1,6 @@
 package com.anranruozhu.mapper;
 
 import com.anranruozhu.entity.LightIntensityData;
-import com.anranruozhu.entity.soilData;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
